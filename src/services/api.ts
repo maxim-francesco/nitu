@@ -1,5 +1,5 @@
 import { API_BASE_URL, BUSINESS_ID } from "@/config/api";
-import type { Listing, DetailedListing, Filters } from "@/types";
+import type { Listing, DetailedListing, Filters, ContactFormData } from "@/types";
 
 /**
  * Fetches a list of available car listings based on filters.
@@ -34,20 +34,47 @@ export const getListings = async (filters: Filters): Promise<Listing[]> => {
   return result.data;
 };
 
-
 /**
  * Fetches details for a single listing by its ID.
  * @param id The ID of the listing.
  * @returns A promise that resolves to the detailed listing object.
  */
 export const getListingById = async (id: string): Promise<DetailedListing> => {
-    const response = await fetch(`${API_BASE_URL}/public/listings/${id}`);
-    
-    if (!response.ok) {
-        const errorBody = await response.text();
-        console.error(`Failed to fetch listing ${id}:`, response.status, errorBody);
-        throw new Error(`A eșuat preluarea anunțului. Status: ${response.status}`);
-    }
-    
-    return await response.json();
+  const response = await fetch(`${API_BASE_URL}/public/listings/${id}`);
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    console.error(`Failed to fetch listing ${id}:`, response.status, errorBody);
+    throw new Error(`A eșuat preluarea anunțului. Status: ${response.status}`);
+  }
+
+  return await response.json();
+};
+
+/**
+ * Submits the contact or custom order form.
+ * @param data The form data.
+ * @returns A promise that resolves to the server response.
+ */
+export const submitContactForm = async (data: ContactFormData): Promise<any> => {
+  const payload = {
+    ...data,
+    businessId: BUSINESS_ID,
+  };
+
+  const response = await fetch(`${API_BASE_URL}/public/contact`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => ({ message: "A apărut o eroare la trimiterea formularului." }));
+    console.error("Form submission error:", errorBody);
+    throw new Error(errorBody.message || "A eșuat trimiterea formularului.");
+  }
+
+  return await response.json();
 };

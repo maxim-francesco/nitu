@@ -48,6 +48,12 @@ export interface Filters {
   [key: string]: any;
 }
 
+export interface ContactFormData {
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+}
 
 /**
  * Helper function to safely extract an attribute value from a listing.
@@ -75,6 +81,6 @@ export const getAttribute = (
     case "BOOLEAN":
       return attrValue.booleanValue;
     default:
-        return null;
+      return null;
   }
 };
