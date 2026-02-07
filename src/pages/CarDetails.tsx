@@ -60,6 +60,43 @@ const CarDetails = () => {
     enabled: !!id,
   });
 
+  useEffect(() => {
+    if (car) {
+        const newTitle = `${car.title} | Nițu Auto Park`;
+        document.title = newTitle;
+
+        const metaDesc = car.description ? car.description.substring(0, 155) + '...' : 'Mașină premium disponibilă la Nițu Auto Park.';
+        const metaImg = car.images.length > 0 ? car.images[0].url : '/logo.png';
+
+        document.querySelector('meta[name="description"]')?.setAttribute('content', metaDesc);
+        document.querySelector('meta[property="og:title"]')?.setAttribute('content', newTitle);
+        document.querySelector('meta[property="og:description"]')?.setAttribute('content', metaDesc);
+        document.querySelector('meta[property="og:image"]')?.setAttribute('content', metaImg);
+        document.querySelector('meta[property="og:url"]')?.setAttribute('content', window.location.href);
+        document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', newTitle);
+        document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', metaDesc);
+        document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', metaImg);
+    }
+
+    // Cleanup on unmount
+    return () => {
+        const defaultTitle = 'Nițu Auto Park | Mașini Rulate Premium';
+        document.title = defaultTitle;
+
+        const defaultDesc = 'Nițu Auto Park, dealer-ul tău de încredere pentru mașini rulate premium din Câmpina. Oferim finanțare, livrare națională și servicii complete.';
+        const defaultImg = '/logo.png';
+
+        document.querySelector('meta[name="description"]')?.setAttribute('content', defaultDesc);
+        document.querySelector('meta[property="og:title"]')?.setAttribute('content', defaultTitle);
+        document.querySelector('meta[property="og:description"]')?.setAttribute('content', defaultDesc);
+        document.querySelector('meta[property="og:image"]')?.setAttribute('content', defaultImg);
+        document.querySelector('meta[property="og:url"]')?.setAttribute('content', window.location.origin);
+        document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', defaultTitle);
+        document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', defaultDesc);
+        document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', defaultImg);
+    };
+  }, [car]);
+
   const images = car?.images.length ? car.images : [{ url: placeholderImg, id: 'placeholder', order: 0 }];
 
   const openLightbox = (index: number) => {
