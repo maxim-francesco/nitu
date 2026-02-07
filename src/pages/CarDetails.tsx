@@ -81,8 +81,10 @@ const CarDetails = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") closeLightbox();
-        if (e.key === "ArrowRight") nextImage();
-        if (e.key === "ArrowLeft") prevImage();
+        if (images.length > 1) {
+            if (e.key === "ArrowRight") nextImage();
+            if (e.key === "ArrowLeft") prevImage();
+        }
     };
     if (lightboxOpen) {
         window.addEventListener("keydown", handleKeyDown);
@@ -324,6 +326,17 @@ const CarDetails = () => {
                       exit={{ opacity: 0.8, scale: 0.98 }}
                       transition={{ duration: 0.2, ease: "easeInOut" }}
                       className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-gold-lg"
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 0 }}
+                      dragElastic={0.15}
+                      onDragEnd={(_event, { offset, velocity }) => {
+                        const swipePower = Math.abs(offset.x) * velocity.x;
+                        if (swipePower < -10000) {
+                          nextImage();
+                        } else if (swipePower > 10000) {
+                          prevImage();
+                        }
+                      }}
                   />
               </AnimatePresence>
             </motion.div>
