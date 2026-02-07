@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -66,17 +67,17 @@ const CarDetails = () => {
     setLightboxOpen(true);
   };
   
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
-  };
+  }, []);
   
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     setSelectedIndex((prev) => (prev + 1) % images.length);
-  };
+  }, [images.length]);
   
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
+  }, [images.length]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -92,8 +93,7 @@ const CarDetails = () => {
     return () => {
         window.removeEventListener("keydown", handleKeyDown);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lightboxOpen, images.length]);
+  }, [lightboxOpen, images.length, nextImage, prevImage, closeLightbox]);
 
 
   if (isLoading) {
@@ -284,7 +284,7 @@ const CarDetails = () => {
               animate={{ opacity: 1, scale: 1, transition: { delay: 0.2 } }}
               exit={{ opacity: 0, scale: 0.5 }}
               onClick={closeLightbox}
-              className="absolute right-4 top-4 z-[52] flex h-10 w-10 items-center justify-center rounded-full bg-card/50 transition-transform active:scale-90"
+              className="absolute right-4 top-4 z-[52] flex h-10 w-10 items-center justify-center rounded-full bg-card/50 backdrop-blur-sm transition-all hover:bg-card/80 active:scale-90"
             >
               <X size={24} className="gold-icon" />
             </motion.button>
@@ -295,7 +295,7 @@ const CarDetails = () => {
               animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
               exit={{ opacity: 0, x: -20 }}
               onClick={(e) => { e.stopPropagation(); prevImage(); }}
-              className="absolute left-4 top-1/2 z-[52] -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-card/50 transition-transform active:scale-90"
+              className="absolute left-4 top-1/2 z-[52] -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-card/50 backdrop-blur-sm transition-all hover:bg-card/80 active:scale-90"
             >
               <ChevronLeft size={30} className="gold-icon" />
             </motion.button>}
@@ -306,7 +306,7 @@ const CarDetails = () => {
               animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
               exit={{ opacity: 0, x: 20 }}
               onClick={(e) => { e.stopPropagation(); nextImage(); }}
-              className="absolute right-4 top-1/2 z-[52] -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-card/50 transition-transform active:scale-90"
+              className="absolute right-4 top-1/2 z-[52] -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-card/50 backdrop-blur-sm transition-all hover:bg-card/80 active:scale-90"
             >
               <ChevronRight size={30} className="gold-icon" />
             </motion.button>}
@@ -339,6 +339,16 @@ const CarDetails = () => {
                       }}
                   />
               </AnimatePresence>
+            </motion.div>
+
+            {/* Image Counter */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.3 } }}
+              exit={{ opacity: 0, y: 10 }}
+              className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-background/50 px-3 py-1 text-sm font-medium text-primary backdrop-blur-sm"
+            >
+              {selectedIndex + 1} / {images.length}
             </motion.div>
           </motion.div>
         )}
