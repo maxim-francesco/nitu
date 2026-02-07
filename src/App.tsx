@@ -16,6 +16,7 @@ import BottomNav from "./components/BottomNav";
 import WhatsAppButton from "./components/WhatsAppButton";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <div className="min-h-screen bg-background">
           <AnimatedRoutes />
           <Footer />
