@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft, Calendar, Gauge, Fuel, Cog, Zap, Check,
-  MessageCircle, Calculator, Shield, Truck, Award, AlertCircle
+  MessageCircle, Calculator, Shield, Truck, Award, AlertCircle,
+  X, ChevronLeft, ChevronRight,
 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import {
@@ -48,12 +50,49 @@ const CarDetailsSkeleton = () => (
 const CarDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   
   const { data: car, isLoading, isError } = useQuery({
     queryKey: ['listing', id],
     queryFn: () => getListingById(id!),
     enabled: !!id,
   });
+
+  const images = car?.images.length ? car.images : [{ url: placeholderImg, id: 'placeholder', order: 0 }];
+
+  const openLightbox = (index: number) => {
+    setSelectedIndex(index);
+    setLightboxOpen(true);
+  };
+  
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+  
+  const nextImage = () => {
+    setSelectedIndex((prev) => (prev + 1) % images.length);
+  };
+  
+  const prevImage = () => {
+    setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowRight") nextImage();
+        if (e.key === "ArrowLeft") prevImage();
+    };
+    if (lightboxOpen) {
+        window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lightboxOpen, images.length]);
+
 
   if (isLoading) {
     return <CarDetailsSkeleton />;
@@ -92,8 +131,6 @@ const CarDetails = () => {
     })
     .filter((v): v is string => v !== null);
 
-  const images = car.images.length > 0 ? car.images : [{ url: placeholderImg, id: 'placeholder', order: 0 }];
-
   return (
     <div className="pb-24">
       {/* Back button */}
@@ -113,8 +150,8 @@ const CarDetails = () => {
       <div className="relative">
         <Carousel className="w-full" opts={{ loop: images.length > 1 }}>
           <CarouselContent>
-            {images.map((img) => (
-              <CarouselItem key={img.id}>
+            {images.map((img, index) => (
+              <CarouselItem key={img.id} onClick={() => openLightbox(index)} className="cursor-pointer">
                 <div className="relative h-72 sm:h-96 overflow-hidden">
                   <img src={img.url} alt={`${car.title}`} className="h-full w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
@@ -228,6 +265,71 @@ const CarDetails = () => {
           </div>
         </AnimatedSection>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md"
+            onClick={closeLightbox}
+          >
+            {/* Close Button */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1, transition: { delay: 0.2 } }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              onClick={closeLightbox}
+              className="absolute right-4 top-4 z-[52] flex h-10 w-10 items-center justify-center rounded-full bg-card/50 transition-transform active:scale-90"
+            >
+              <X size={24} className="gold-icon" />
+            </motion.button>
+
+            {/* Prev Button */}
+            {images.length > 1 && <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+              exit={{ opacity: 0, x: -20 }}
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
+              className="absolute left-4 top-1/2 z-[52] -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-card/50 transition-transform active:scale-90"
+            >
+              <ChevronLeft size={30} className="gold-icon" />
+            </motion.button>}
+
+            {/* Next Button */}
+            {images.length > 1 && <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+              exit={{ opacity: 0, x: 20 }}
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
+              className="absolute right-4 top-1/2 z-[52] -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-card/50 transition-transform active:scale-90"
+            >
+              <ChevronRight size={30} className="gold-icon" />
+            </motion.button>}
+
+            {/* Image */}
+            <motion.div
+              className="relative p-4 md:p-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AnimatePresence initial={false} mode="wait">
+                  <motion.img
+                      key={images[selectedIndex].id}
+                      src={images[selectedIndex].url}
+                      alt={car.title}
+                      initial={{ opacity: 0.8, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0.8, scale: 0.98 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-gold-lg"
+                  />
+              </AnimatePresence>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
