@@ -73,4 +73,8 @@ export const getAttribute = (
     case "NUMBER":
       return attrValue.numberValue;
     case "BOOLEAN":
-      return attrValue.booleanValue
+      return attrValue.booleanValue;
+    default:
+        return null;
+  }
+};

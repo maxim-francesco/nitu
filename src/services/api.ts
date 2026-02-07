@@ -41,4 +41,13 @@ export const getListings = async (filters: Filters): Promise<Listing[]> => {
  * @returns A promise that resolves to the detailed listing object.
  */
 export const getListingById = async (id: string): Promise<DetailedListing> => {
-    const response = await fetch(`${API_...
+    const response = await fetch(`${API_BASE_URL}/public/listings/${id}`);
+    
+    if (!response.ok) {
+        const errorBody = await response.text();
+        console.error(`Failed to fetch listing ${id}:`, response.status, errorBody);
+        throw new Error(`A eșuat preluarea anunțului. Status: ${response.status}`);
+    }
+    
+    return await response.json();
+};

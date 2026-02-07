@@ -142,7 +142,7 @@ const CarDetails = () => {
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <h1 className="text-2xl font-bold md:text-3xl">{car.title}</h1>
             {car.price && (
-                <span className="text-2xl font-bold gold-gradient-text md:text-3xl">{car.price.toLocaleString("ro-RO")} €</span>
+                <span className="text-2xl font-bold gold-gradient-text">{car.price.toLocaleString("ro-RO")} €</span>
             )}
           </div>
         </AnimatedSection>
