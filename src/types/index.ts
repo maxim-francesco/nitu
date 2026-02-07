@@ -33,9 +33,21 @@ export interface Listing {
 // Full listing for detail views
 export interface DetailedListing extends Listing {
   description: string;
-  // `images` in detailed view has more fields
+  businessId: string;
   images: ListingImage[];
 }
+
+export interface Filters {
+  q?: string;
+  sortBy?: string;
+  Pret_min?: string;
+  Pret_max?: string;
+  Kilometraj_min?: string;
+  Kilometraj_max?: string;
+  Combustibil?: string[];
+  [key: string]: any;
+}
+
 
 /**
  * Helper function to safely extract an attribute value from a listing.
@@ -61,8 +73,4 @@ export const getAttribute = (
     case "NUMBER":
       return attrValue.numberValue;
     case "BOOLEAN":
-      return attrValue.booleanValue;
-    default:
-      return null;
-  }
-};
+      return attrValue.booleanValue

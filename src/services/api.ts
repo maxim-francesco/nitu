@@ -1,23 +1,29 @@
 import { API_BASE_URL, BUSINESS_ID } from "@/config/api";
-import type { Listing, DetailedListing } from "@/types";
+import type { Listing, DetailedListing, Filters } from "@/types";
 
 /**
- * Fetches a list of available car listings.
- * @param searchQuery Optional search query to filter by title/description.
+ * Fetches a list of available car listings based on filters.
+ * @param filters An object containing filter criteria.
  * @returns A promise that resolves to an array of listings.
  */
-export const getListings = async (searchQuery: string = ""): Promise<Listing[]> => {
+export const getListings = async (filters: Filters): Promise<Listing[]> => {
   const params = new URLSearchParams({
     businessId: BUSINESS_ID,
-    limit: '100', // Fetch up to 100 listings
+    limit: "100",
   });
 
-  if (searchQuery) {
-    params.append('q', searchQuery);
+  for (const [key, value] of Object.entries(filters)) {
+    if (value) {
+      if (Array.isArray(value)) {
+        value.forEach((v) => params.append(key, String(v)));
+      } else {
+        params.append(key, String(value));
+      }
+    }
   }
 
   const response = await fetch(`${API_BASE_URL}/public/listings/search?${params.toString()}`);
-  
+
   if (!response.ok) {
     const errorBody = await response.text();
     console.error("Failed to fetch listings:", response.status, errorBody);
@@ -28,26 +34,11 @@ export const getListings = async (searchQuery: string = ""): Promise<Listing[]> 
   return result.data;
 };
 
+
 /**
  * Fetches details for a single listing by its ID.
  * @param id The ID of the listing.
  * @returns A promise that resolves to the detailed listing object.
  */
 export const getListingById = async (id: string): Promise<DetailedListing> => {
-    const response = await fetch(`${API_BASE_URL}/public/listings/${id}`);
-    
-    if (!response.ok) {
-        const errorBody = await response.text();
-        console.error("Failed to fetch listing:", response.status, errorBody);
-        throw new Error(`A eșuat preluarea detaliilor anunțului. Status: ${response.status}`);
-    }
-    const listing = await response.json();
-
-    // The backend doesn't seem to enforce businessId on this public endpoint.
-    // As a client-side safeguard, we'll check if the fetched listing belongs to the correct business.
-    if (listing.businessId !== BUSINESS_ID) {
-      throw new Error("Anunțul nu aparține acestui dealer.");
-    }
-    
-    return listing;
-};
+    const response = await fetch(`${API_...
