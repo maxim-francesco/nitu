@@ -17,27 +17,38 @@ import {
 import type { Filters } from "@/types";
 
 const Inventory = () => {
+  // UI state for direct feedback
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [transmission, setTransmission] = useState<string>("Toate");
 
-  // Debounce search input to avoid excessive API calls
+  // Debounced state for API calls
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [debouncedPriceRange, setDebouncedPriceRange] = useState(priceRange);
+
+  // Debounce search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
     }, 500);
-
-    return () => {
-      clearTimeout(handler);
-    };
+    return () => clearTimeout(handler);
   }, [search]);
 
+  // Debounce slider input for API calls
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedPriceRange(priceRange);
+    }, 500); // Debounce for 500ms to avoid excessive API calls
+    return () => clearTimeout(handler);
+  }, [priceRange]);
+
   // Construct filters object for the API call
-  const queryFilters: Filters = { q: debouncedSearch };
-  if (priceRange[0] > 0) queryFilters['Pret_min'] = String(priceRange[0]);
-  if (priceRange[1] < 100000) queryFilters['Pret_max'] = String(priceRange[1]);
-  if (transmission !== "Toate") queryFilters["Cutie de viteze"] = transmission;
+  const queryFilters: Filters = {
+    q: debouncedSearch,
+    'Pret_min': debouncedPriceRange[0] > 0 ? String(debouncedPriceRange[0]) : undefined,
+    'Pret_max': debouncedPriceRange[1] < 100000 ? String(debouncedPriceRange[1]) : undefined,
+    "Cutie de viteze": transmission !== "Toate" ? transmission : undefined,
+  };
 
   // Fetch data using React Query. It will re-fetch whenever queryFilters changes.
   const { data: cars, isLoading, isError } = useQuery({
@@ -70,7 +81,7 @@ const Inventory = () => {
             <Label className="mb-2 block text-sm font-medium text-muted-foreground">Preț</Label>
             <Slider
               value={priceRange}
-              onValueCommit={(value: [number, number]) => setPriceRange(value)}
+              onValueChange={(value) => setPriceRange(value as [number, number])}
               min={0}
               max={100000}
               step={1000}
