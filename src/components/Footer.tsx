@@ -13,9 +13,13 @@ const Footer = () => (
         </div>
         <div className="text-xs text-muted-foreground/60">
             <p>© {new Date().getFullYear()} Nițu Auto Park. Toate drepturile rezervate.</p>
-            <div className="mt-2">
+            <div className="mt-2 flex items-center justify-center gap-x-3">
                 <Link to="/termeni-si-conditii" className="hover:text-primary transition-colors">
                     Termeni și Condiții
+                </Link>
+                <span className="text-muted-foreground/30">|</span>
+                <Link to="/politica-de-confidentialitate" className="hover:text-primary transition-colors">
+                    Politica de Confidențialitate
                 </Link>
             </div>
         </div>
