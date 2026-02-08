@@ -20,7 +20,7 @@ const Contact = () => (
       animate={{ opacity: 1, y: 0 }}
     >
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2824.27932314643!2d25.72973481554035!3d45.13022497909838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b329e46a789e3b%3A0x8e5c2b8c5a45211d!2sBulevardul%20Nicolae%20B%C4%83lcescu%2C%20C%C3%A2mpina%20105600!5e0!3m2!1sro!2sro"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2815.7721034959973!2d25.744898199999994!3d45.1106876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b3ab680224cf41%3A0x60af4cb8f704c587!2sAuto-Park%20Ni%C8%9Bu!5e0!3m2!1sen!2sro!4v1770563591102!5m2!1sen!2sro"
         width="100%"
         height="250"
         style={{ border: 0 }}
