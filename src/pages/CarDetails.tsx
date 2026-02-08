@@ -268,7 +268,7 @@ const CarDetails = () => {
               Calculează Rata
             </button>
             <a
-              href="https://wa.me/40700000000"
+              href="https://wa.me/40745461202"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline-gold flex-1 rounded-xl py-3.5 text-sm font-semibold flex items-center justify-center gap-2"

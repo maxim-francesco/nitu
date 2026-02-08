@@ -3,10 +3,10 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 
 const contactInfo = [
-  { icon: MapPin, label: "Adresa", value: "Strada DEALULUI, Nr. 84, Câmpina, Prahova" },
-  { icon: Phone, label: "Telefon", value: "+40 700 000 000" },
-  { icon: Mail, label: "Email", value: "contact@nituautopark.ro" },
-  { icon: Clock, label: "Program", value: "Lun – Sâm: 09:00 – 18:00" },
+  { icon: MapPin, label: "Adresa", value: "Bulevardul Nicolae Bălcescu, 105600, Câmpina, România" },
+  { icon: Phone, label: "Telefon", value: "0745 461 202" },
+  { icon: Mail, label: "Email", value: "andrei9940@yahoo.com" },
+  { icon: Clock, label: "Program", value: "Deschis Non-Stop" },
 ];
 
 const Contact = () => (
@@ -20,7 +20,7 @@ const Contact = () => (
       animate={{ opacity: 1, y: 0 }}
     >
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2800.0!2d25.7356!3d45.1283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDXCsDA3JzQyLjAiTiAyNcKwNDQnMDguMiJF!5e0!3m2!1sro!2sro!4v1234567890"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2824.27932314643!2d25.72973481554035!3d45.13022497909838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b329e46a789e3b%3A0x8e5c2b8c5a45211d!2sBulevardul%20Nicolae%20B%C4%83lcescu%2C%20C%C3%A2mpina%20105600!5e0!3m2!1sro!2sro"
         width="100%"
         height="250"
         style={{ border: 0 }}
