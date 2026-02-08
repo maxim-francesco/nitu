@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Fuel, Gauge, Calendar, ChevronDown, ChevronUp, Search, AlertCircle } from "lucide-react";
@@ -76,12 +76,15 @@ const CarCardSkeleton = () => (
 )
 
 const Inventory = () => {
-  const [filter, setFilter] = useState("Toate");
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const initialCategory = searchParams.get("category") || "Toate";
+  const [filter, setFilter] = useState(initialCategory);
   const [search, setSearch] = useState("");
 
   const { data: cars, isLoading, isError } = useQuery({
-    queryKey: ['listings', search],
-    queryFn: () => getListings(search),
+    queryKey: ['listings', { q: search }],
+    queryFn: () => getListings({ q: search }),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 

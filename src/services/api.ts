@@ -6,7 +6,7 @@ import type { Listing, DetailedListing, Filters, ContactFormData } from "@/types
  * @param filters An object containing filter criteria.
  * @returns A promise that resolves to an array of listings.
  */
-export const getListings = async (filters: Filters): Promise<Listing[]> => {
+export const getListings = async (filters: Filters = {}): Promise<Listing[]> => {
   const params = new URLSearchParams({
     businessId: BUSINESS_ID,
     limit: "100",

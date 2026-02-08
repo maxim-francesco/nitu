@@ -105,7 +105,7 @@ const Home = () => {
             <motion.div
               key={cat.name}
               variants={fadeUp}
-              onClick={() => navigate("/masini")}
+              onClick={() => navigate(`/masini?category=${cat.name}`)}
               className="glass-card-gold group cursor-pointer overflow-hidden"
             >
               <div className="relative h-48 overflow-hidden">
