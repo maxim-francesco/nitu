@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CreditCard, FileCheck, Clock, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
-
-const benefits = [
-  { icon: FileCheck, title: "Doar cu Buletinul", desc: "Fără acte complicate sau garanții suplimentare." },
-  { icon: Clock, title: "Aprobare Rapidă", desc: "Răspuns în maxim 24 de ore." },
-  { icon: CreditCard, title: "Rate Flexibile", desc: "Perioade de 12 până la 84 de luni." },
-];
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import tbiLogo from "@/assets/tbi_bank.png";
+import mogoLogo from "@/assets/mogo.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -17,29 +19,28 @@ const fadeUp = {
 
 const Financing = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const initialAmount = Number(searchParams.get("suma")) || 15000;
   const [amount, setAmount] = useState(initialAmount);
   const [months, setMonths] = useState(48);
   const rate = 0.009; // monthly
-  const monthly = Math.round(amount * (rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1));
+  const monthly = Math.round((amount * (rate * Math.pow(1 + rate, months))) / (Math.pow(1 + rate, months) - 1));
+
+  const handleRequestOffer = () => {
+    navigate("/contact");
+  };
 
   return (
     <div className="section-padding pb-24">
-      <SectionTitle
-        title="Finanțare Auto"
-        subtitle="Rate doar cu buletinul — simplu și rapid"
-        gold
-      />
+      <SectionTitle title="Finanțare Auto" subtitle="Rate doar cu buletinul — simplu și rapid" gold />
 
-      {/* Loan Calculator */}
       <motion.div
-        className="glass-card-gold mx-auto max-w-md rounded-2xl p-6"
+        className="glass-card-gold mx-auto mb-12 max-w-md rounded-2xl p-6"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
         <h3 className="mb-4 text-lg font-bold">Calculator Rate</h3>
-
         <div className="mb-4">
           <label className="mb-1 flex justify-between text-sm text-muted-foreground">
             <span>Valoare mașină</span>
@@ -55,7 +56,6 @@ const Financing = () => {
             className="w-full accent-primary"
           />
         </div>
-
         <div className="mb-6">
           <label className="mb-1 flex justify-between text-sm text-muted-foreground">
             <span>Perioadă</span>
@@ -71,50 +71,101 @@ const Financing = () => {
             className="w-full accent-primary"
           />
         </div>
-
         <div className="rounded-xl bg-muted/50 p-4 text-center">
           <p className="text-sm text-muted-foreground">Rată lunară estimată</p>
           <p className="text-3xl font-bold gold-gradient-text">{monthly} € / lună</p>
-          <p className="mt-1 text-xs text-muted-foreground/60">
-            *Calcul orientativ. Rata finală depinde de profilul dvs.
-          </p>
+          <p className="mt-1 text-xs text-muted-foreground/60">*Calcul orientativ. Rata finală depinde de profilul dvs.</p>
         </div>
-
-        <button className="btn-gold mt-4 w-full rounded-xl py-3 text-sm">
-          Solicită Finanțare <ArrowRight size={16} className="ml-1 inline" />
-        </button>
       </motion.div>
 
-      {/* Partners */}
-      <div className="mt-10 text-center">
-        <p className="mb-4 text-sm text-muted-foreground">Parteneri de finanțare</p>
-        <div className="flex items-center justify-center gap-8">
-          <div className="glass-card rounded-xl px-6 py-3">
-            <span className="text-lg font-bold gold-gradient-text">TBI Bank</span>
+      <SectionTitle title="Partenerii Noștri de Încredere" subtitle="Soluții de creditare adaptate nevoilor tale" />
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <motion.div
+          className="glass-card flex flex-col rounded-2xl p-6"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+        >
+          <img src={tbiLogo} alt="TBI Bank" className="mb-4 h-10 w-auto self-start rounded bg-white px-2 py-1" />
+          <div className="flex-grow">
+            <p className="text-muted-foreground text-sm mb-4">
+              Soluții de finanțare flexibile pentru persoane fizice și juridice, cu aprobare rapidă.
+            </p>
+            <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>Persoane Fizice</AccordionTrigger>
+                <AccordionContent className="prose prose-sm prose-invert max-w-none text-muted-foreground">
+                  <h4 className="text-foreground">Criterii de eligibilitate:</h4>
+                  <ul>
+                    <li>Vârstă între 18 și 75 de ani.</li>
+                    <li>Minim 3 luni la actualul angajator.</li>
+                    <li>Salariu minim: 2000 RON / Pensie minimă: 1250 RON.</li>
+                  </ul>
+                  <h4 className="text-foreground">Venituri acceptate:</h4>
+                  <p>Salarii, pensii, PFA, diurne, chirii, dividente, indemnizații.</p>
+                  <h4 className="text-foreground">Bonus:</h4>
+                  <p>Acceptăm codebitor pentru susținerea dosarului.</p>
+                  <h4 className="text-foreground">Detalii finanțare:</h4>
+                  <ul>
+                    <li>Sume între 3.000 și 150.000 RON.</li>
+                    <li>Răspuns rapid: 15 - 120 minute.</li>
+                  </ul>
+                  <h4 className="text-foreground">Venituri din străinătate:</h4>
+                  <p>
+                    Contract de muncă pe perioadă nedeterminată cu minim 6 luni vechime. Este necesar un girant cu
+                    venituri din România doar dacă nu aveți istoric de credit în ultimii 5 ani.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>Persoane Juridice</AccordionTrigger>
+                <AccordionContent className="prose prose-sm prose-invert max-w-none text-muted-foreground">
+                  <h4 className="text-foreground">Criterii de eligibilitate:</h4>
+                  <ul>
+                    <li>Vechime firmă: minim 1 an.</li>
+                    <li>
+                      Cifra de afaceri: minim 500.000 RON (1.500.000 RON pentru transport/construcții).
+                    </li>
+                    <li>Ultimul bilanț contabil depus.</li>
+                  </ul>
+                  <h4 className="text-foreground">Detalii finanțare:</h4>
+                  <ul>
+                    <li>Finanțare de până la 250.000 RON.</li>
+                    <li>Suma maximă finanțată: 10% din cifra de afaceri.</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
-          <div className="glass-card rounded-xl px-6 py-3">
-            <span className="text-lg font-bold gold-gradient-text">MOGO</span>
-          </div>
-        </div>
-      </div>
+          <button onClick={handleRequestOffer} className="btn-gold mt-auto w-full rounded-xl py-3 text-sm mt-4">
+            Cere Ofertă TBI <ArrowRight size={16} className="ml-1 inline" />
+          </button>
+        </motion.div>
 
-      {/* Benefits */}
-      <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {benefits.map((b, i) => (
-          <motion.div
-            key={b.title}
-            className="glass-card rounded-xl p-5 text-center"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <b.icon size={28} className="mx-auto mb-3 gold-icon" />
-            <h4 className="mb-1 font-bold">{b.title}</h4>
-            <p className="text-sm text-muted-foreground">{b.desc}</p>
-          </motion.div>
-        ))}
+        <motion.div
+          className="glass-card flex flex-col rounded-2xl p-6"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, delay: 0.1 }}
+        >
+          <img src={mogoLogo} alt="Mogo" className="mb-4 h-10 w-auto self-start rounded bg-white px-2 py-1" />
+          <div className="flex-grow">
+            <p className="text-muted-foreground text-sm mb-4">
+              Credit auto rapid și accesibil, chiar și pentru situații financiare mai complexe.
+            </p>
+            <div className="bg-primary/10 border-l-4 border-primary p-4 rounded-r-lg mt-4">
+              <h4 className="font-bold text-primary">Soluția pentru tine!</h4>
+              <p className="text-primary/90 text-sm font-medium">
+                Finanțăm persoane cu istoric negativ în biroul de credit.
+              </p>
+            </div>
+          </div>
+          <button onClick={handleRequestOffer} className="btn-gold mt-auto w-full rounded-xl py-3 text-sm mt-6">
+            Cere Ofertă Mogo <ArrowRight size={16} className="ml-1 inline" />
+          </button>
+        </motion.div>
       </div>
     </div>
   );
