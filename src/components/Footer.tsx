@@ -13,7 +13,7 @@ const Footer = () => (
         </div>
         <div className="text-xs text-muted-foreground/60">
             <p>© {new Date().getFullYear()} Nițu Auto Park. Toate drepturile rezervate.</p>
-            <div className="mt-2 flex flex-wrap items-center justify-center gap-x-3">
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
                 <Link to="/termeni-si-conditii" className="hover:text-primary transition-colors">
                     Termeni și Condiții
                 </Link>
@@ -25,6 +25,14 @@ const Footer = () => (
                 <Link to="/politica-de-cookies" className="hover:text-primary transition-colors">
                     Politica de Cookies
                 </Link>
+            </div>
+            <div className="mt-2 flex items-center justify-center gap-x-4">
+                <a href="https://anpc.ro/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-medium">
+                    ANPC
+                </a>
+                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-medium">
+                    SOL
+                </a>
             </div>
         </div>
       </div>
