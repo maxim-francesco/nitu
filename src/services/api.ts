@@ -7,17 +7,22 @@ import type { Listing, DetailedListing, Filters, ContactFormData } from "@/types
  * @returns A promise that resolves to an array of listings.
  */
 export const getListings = async (filters: Filters = {}): Promise<Listing[]> => {
-  const params = new URLSearchParams({
+  const defaultParams: Record<string, string> = {
     businessId: BUSINESS_ID,
-    limit: "100",
-  });
+    limit: "100", // Default limit if not provided
+  };
+
+  const params = new URLSearchParams(defaultParams);
 
   for (const [key, value] of Object.entries(filters)) {
-    if (value) {
+    if (value !== undefined && value !== null) {
       if (Array.isArray(value)) {
+        // Remove old key if it exists, then append new ones
+        if (params.has(key)) params.delete(key);
         value.forEach((v) => params.append(key, String(v)));
       } else {
-        params.append(key, String(value));
+        // Set will overwrite the default if provided in filters
+        params.set(key, String(value));
       }
     }
   }

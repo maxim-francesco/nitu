@@ -1,18 +1,12 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Car, Shield, Star } from "lucide-react";
+import { ArrowRight, Car, Shield, Star, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import heroImg from "@/assets/hero-car.jpg";
-import suvImg from "@/assets/car-suv.jpg";
-import sedanImg from "@/assets/car-sedan.jpg";
-import sportImg from "@/assets/car-sport.jpg";
 import logo from "@/assets/logo.png";
 import SectionTitle from "@/components/SectionTitle";
-
-const categories = [
-  { name: "SUV", image: suvImg, desc: "Confort & Putere" },
-  { name: "Sedan", image: sedanImg, desc: "Eleganță Clasică" },
-  { name: "Sport", image: sportImg, desc: "Adrenalină Pură" },
-];
+import { CarCard, CarCardSkeleton } from "@/components/CarCard";
+import { getListings } from "@/services/api";
 
 const stats = [
   { icon: Car, value: "200+", label: "Mașini Vândute" },
@@ -28,6 +22,58 @@ const container = {
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+};
+
+const RecentlyAdded = () => {
+  const navigate = useNavigate();
+  const { data: recentCars, isLoading, isError } = useQuery({
+    queryKey: ['recentListings'],
+    queryFn: () => getListings({ limit: 3, sortBy: 'newest' }),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  return (
+    <section className="section-padding">
+      <SectionTitle title="Ultimele adăugate în stoc" subtitle="Descoperă cele mai noi oferte sosite la Nițu Auto Park" gold />
+      <motion.div
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+      >
+        {isLoading && Array.from({ length: 3 }).map((_, i) => <CarCardSkeleton key={i} />)}
+        
+        {!isLoading && !isError && recentCars && recentCars.map((car) => (
+          <CarCard key={car.id} car={car} />
+        ))}
+      </motion.div>
+
+      {isError && (
+        <div className="col-span-full mt-8 text-center text-muted-foreground flex flex-col items-center gap-2">
+          <AlertCircle className="w-8 h-8 text-destructive" />
+          <p>Nu am putut încărca mașinile recente.</p>
+        </div>
+      )}
+
+      {!isLoading && recentCars && recentCars.length > 0 && (
+          <motion.div 
+            className="mt-8 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <button
+              onClick={() => navigate("/masini")}
+              className="btn-gold rounded-full px-6 py-3 text-sm"
+            >
+              Vezi tot stocul <ArrowRight size={16} className="ml-1 inline" />
+            </button>
+          </motion.div>
+      )}
+    </section>
+  );
 };
 
 const Home = () => {
@@ -91,39 +137,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="section-padding">
-        <SectionTitle title="Alege Categoria" subtitle="Ce tip de mașină cauți?" gold />
-        <motion.div
-          className="grid grid-cols-1 gap-4 sm:grid-cols-3"
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-        >
-          {categories.map((cat) => (
-            <motion.div
-              key={cat.name}
-              variants={fadeUp}
-              onClick={() => navigate(`/masini?category=${cat.name}`)}
-              className="glass-card-gold group cursor-pointer overflow-hidden"
-            >
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-bold">{cat.name}</h3>
-                <p className="text-sm text-muted-foreground">{cat.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
+      {/* Recently Added */}
+      <RecentlyAdded />
 
       {/* Stats */}
       <section className="section-padding">

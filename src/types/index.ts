@@ -39,7 +39,8 @@ export interface DetailedListing extends Listing {
 
 export interface Filters {
   q?: string;
-  sortBy?: string;
+  sortBy?: 'newest' | 'oldest' | 'price_asc' | 'price_desc' | 'mileage_asc' | 'mileage_desc';
+  limit?: number;
   Pret_min?: string;
   Pret_max?: string;
   Kilometraj_min?: string;
