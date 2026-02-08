@@ -46,10 +46,18 @@ const Inventory = () => {
   // Construct filters object for the API call
   const queryFilters: Filters = {
     q: debouncedSearch,
-    'Pret_min': debouncedPriceRange[0] > 0 ? String(debouncedPriceRange[0]) : undefined,
-    'Pret_max': debouncedPriceRange[1] < 100000 ? String(debouncedPriceRange[1]) : undefined,
-    "Cutie de viteze": transmission !== "Toate" ? transmission : undefined,
   };
+  if (debouncedPriceRange[0] > 0) {
+    queryFilters['Pret_min'] = String(debouncedPriceRange[0]);
+  }
+  if (debouncedPriceRange[1] < 100000) {
+    queryFilters['Pret_max'] = String(debouncedPriceRange[1]);
+  }
+  if (transmission !== "Toate") {
+    queryFilters["Cutie de viteze"] = transmission;
+  }
+
+  console.log("Sending filters:", queryFilters); // For debugging
 
   // Fetch data using React Query. It will re-fetch whenever queryFilters changes.
   const { data: cars, isLoading, isError } = useQuery({
@@ -103,8 +111,8 @@ const Inventory = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Toate">Toate</SelectItem>
-                <SelectItem value="Automată">Automată</SelectItem>
-                <SelectItem value="Manuală">Manuală</SelectItem>
+                <SelectItem value="Automata">Automată</SelectItem>
+                <SelectItem value="Manuala">Manuală</SelectItem>
               </SelectContent>
             </Select>
           </div>
