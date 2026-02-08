@@ -19,6 +19,8 @@ import PageTransition from "./components/PageTransition";
 import ScrollToTop from "./components/ScrollToTop";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookiePolicy from "./pages/CookiePolicy";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +39,7 @@ const AnimatedRoutes = () => {
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/termeni-si-conditii" element={<PageTransition><TermsAndConditions /></PageTransition>} />
         <Route path="/politica-de-confidentialitate" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
+        <Route path="/politica-de-cookies" element={<PageTransition><CookiePolicy /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
@@ -55,6 +58,7 @@ const App = () => (
           <Footer />
           <WhatsAppButton />
           <BottomNav />
+          <CookieBanner />
         </div>
       </BrowserRouter>
     </TooltipProvider>
