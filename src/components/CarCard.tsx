@@ -1,16 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Calendar, Gauge, ChevronDown } from "lucide-react";
+import { Calendar, Gauge, Fuel, Cog, ArrowRight } from "lucide-react";
 import type { Listing } from "@/types";
 import { getAttribute } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import placeholderImg from "@/assets/car-sedan.jpg";
+
+const SpecItem = ({ icon: Icon, value, label }: { icon: React.ElementType, value: string | number | boolean | null, label: string }) => {
+    if (!value && value !== 0) return null;
+    return (
+        <div className="flex items-center gap-2">
+            <Icon size={14} className="gold-icon shrink-0" />
+            <div className="text-xs">
+                <p className="text-muted-foreground">{label}</p>
+                <p className="font-semibold text-foreground">{String(value)}</p>
+            </div>
+        </div>
+    )
+}
 
 export const CarCard = ({ car }: { car: Listing }) => {
   const navigate = useNavigate();
 
   const carImage = car.images?.[0]?.url || placeholderImg;
   const year = getAttribute(car, 'an');
+  const fuel = getAttribute(car, 'combustibil');
+  const transmission = getAttribute(car, 'cutie de viteze');
 
   return (
     <motion.div
@@ -37,14 +52,18 @@ export const CarCard = ({ car }: { car: Listing }) => {
             <span className="font-bold gold-gradient-text">{car.price.toLocaleString("ro-RO")} €</span>
           )}
         </div>
-        <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
-          {year && <span className="flex items-center gap-1"><Calendar size={13} className="gold-icon" /> {year}</span>}
-          {car.mileage && <span className="flex items-center gap-1"><Gauge size={13} className="gold-icon" /> {car.mileage.toLocaleString("ro-RO")} km</span>}
+        
+        <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
+            <SpecItem icon={Calendar} value={year} label="An" />
+            <SpecItem icon={Gauge} value={car.mileage ? `${car.mileage.toLocaleString("ro-RO")} km` : null} label="Kilometraj" />
+            <SpecItem icon={Fuel} value={fuel} label="Combustibil" />
+            <SpecItem icon={Cog} value={transmission} label="Transmisie" />
         </div>
-        <div className="mt-auto pt-3">
-             <div className="mt-3 flex items-center justify-center gap-1 text-xs text-primary transition-transform active:scale-95">
-                Detalii
-                <ChevronDown size={14} className="transform transition-transform group-hover:translate-y-0.5" />
+
+        <div className="mt-auto pt-4">
+             <div className="flex items-center justify-center gap-2 text-sm font-semibold text-primary transition-all group-hover:gap-3">
+                Detalii complete
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </div>
         </div>
       </div>
@@ -53,14 +72,26 @@ export const CarCard = ({ car }: { car: Listing }) => {
 };
 
 export const CarCardSkeleton = () => (
-    <div className="glass-card-gold overflow-hidden">
+    <div className="glass-card-gold flex flex-col overflow-hidden">
         <Skeleton className="h-48 w-full" />
-        <div className="p-4">
-            <Skeleton className="h-5 w-3/4" />
-            <Skeleton className="h-5 w-1/4 mt-1" />
-            <div className="mt-3 flex gap-4">
-                <Skeleton className="h-4 w-16" />
-                <Skeleton className="h-4 w-20" />
+        <div className="flex flex-1 flex-col p-4">
+            <div className="flex justify-between">
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-5 w-1/4 ml-2" />
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
+                {Array.from({ length: 4 }).map((_, i) => (
+                     <div key={i} className="flex items-center gap-2">
+                        <Skeleton className="size-4 rounded"/>
+                        <div className="space-y-1.5">
+                            <Skeleton className="h-2.5 w-10"/>
+                            <Skeleton className="h-3.5 w-16"/>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="mt-auto pt-4">
+                <Skeleton className="h-5 w-3/4 mx-auto" />
             </div>
         </div>
     </div>
