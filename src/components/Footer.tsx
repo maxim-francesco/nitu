@@ -1,4 +1,5 @@
 import logo from "@/assets/logo.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => (
   <footer className="border-t border-border/50 bg-card/40 pb-24 pt-10 section-padding">
@@ -10,9 +11,14 @@ const Footer = () => (
           <p>CUI: 38748301 | Reg. Com: J29/157/2018</p>
           <p>Bulevardul Nicolae Bălcescu, 105600, Câmpina, România</p>
         </div>
-        <p className="text-xs text-muted-foreground/60">
-          © {new Date().getFullYear()} Nițu Auto Park. Toate drepturile rezervate.
-        </p>
+        <div className="text-xs text-muted-foreground/60">
+            <p>© {new Date().getFullYear()} Nițu Auto Park. Toate drepturile rezervate.</p>
+            <div className="mt-2">
+                <Link to="/termeni-si-conditii" className="hover:text-primary transition-colors">
+                    Termeni și Condiții
+                </Link>
+            </div>
+        </div>
       </div>
     </div>
   </footer>

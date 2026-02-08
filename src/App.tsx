@@ -17,6 +17,7 @@ import WhatsAppButton from "./components/WhatsAppButton";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import ScrollToTop from "./components/ScrollToTop";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const AnimatedRoutes = () => {
         <Route path="/comanda" element={<PageTransition><CustomOrder /></PageTransition>} />
         <Route path="/servicii" element={<PageTransition><Services /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        <Route path="/termeni-si-conditii" element={<PageTransition><TermsAndConditions /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
