@@ -47,7 +47,7 @@ const Home = () => {
           <motion.img
             src={logo}
             alt="Nițu Auto Park"
-            className="mb-6 h-20 w-auto drop-shadow-2xl md:h-28"
+            className="mb-6 h-28 w-auto drop-shadow-2xl md:h-40"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7 }}
