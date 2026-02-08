@@ -1,81 +1,128 @@
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { Search, AlertCircle } from "lucide-react";
+import { Search, AlertCircle, Car } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import { getListings } from "@/services/api";
 import { CarCard, CarCardSkeleton } from "@/components/CarCard";
-
-// Hardcoded categories as there's no public endpoint for them yet.
-const categories = ["Toate", "SUV", "Sedan", "Sport", "Break", "Hatchback"];
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { Filters } from "@/types";
 
 const Inventory = () => {
-  const [searchParams] = useSearchParams();
-  const initialCategory = searchParams.get("category") || "Toate";
-  const [filter, setFilter] = useState(initialCategory);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+  const [transmission, setTransmission] = useState<string>("Toate");
 
+  // Debounce search input to avoid excessive API calls
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search]);
+
+  // Construct filters object for the API call
+  const queryFilters: Filters = { q: debouncedSearch };
+  if (priceRange[0] > 0) queryFilters['Pret_min'] = String(priceRange[0]);
+  if (priceRange[1] < 100000) queryFilters['Pret_max'] = String(priceRange[1]);
+  if (transmission !== "Toate") queryFilters["Cutie de viteze"] = transmission;
+
+  // Fetch data using React Query. It will re-fetch whenever queryFilters changes.
   const { data: cars, isLoading, isError } = useQuery({
-    queryKey: ['listings', { q: search }],
-    queryFn: () => getListings({ q: search }),
+    queryKey: ['listings', queryFilters],
+    queryFn: () => getListings(queryFilters),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
-
-  const filtered = cars?.filter((c) => {
-    const matchCat = filter === "Toate" || c.category.name.toLowerCase() === filter.toLowerCase();
-    return matchCat;
-  }) || [];
 
   return (
     <div className="section-padding pb-24">
       <SectionTitle title="Mașini în Stoc" subtitle="Descoperă oferta noastră curentă" gold />
 
-      <div className="mb-4 flex items-center gap-2 rounded-xl bg-muted/50 px-4 py-3">
-        <Search size={18} className="text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Caută marca sau modelul..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
-        />
-      </div>
+      <div className="mb-8 space-y-4">
+        {/* Search Bar */}
+        <div className="relative">
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Caută marca sau modelul..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-full bg-muted/50 py-3 pl-11 pr-4 text-sm outline-none transition-all placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/50"
+          />
+        </div>
 
-      <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setFilter(cat)}
-            className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all active:scale-95 ${
-              filter === cat ? "btn-gold" : "btn-outline-gold"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+        {/* Filters */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* Price Filter */}
+          <div className="glass-card rounded-xl p-4">
+            <Label className="mb-2 block text-sm font-medium text-muted-foreground">Preț</Label>
+            <Slider
+              value={priceRange}
+              onValueCommit={(value: [number, number]) => setPriceRange(value)}
+              min={0}
+              max={100000}
+              step={1000}
+              className="accent-primary"
+            />
+            <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+              <span>{priceRange[0].toLocaleString("ro-RO")} €</span>
+              <span>{priceRange[1].toLocaleString("ro-RO")} €</span>
+            </div>
+          </div>
+          
+          {/* Transmission Filter */}
+          <div className="glass-card rounded-xl p-4">
+            <Label className="mb-2 block text-sm font-medium text-muted-foreground">Cutie de viteze</Label>
+            <Select value={transmission} onValueChange={setTransmission}>
+              <SelectTrigger className="w-full border-border/50 bg-background">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Toate">Toate</SelectItem>
+                <SelectItem value="Automată">Automată</SelectItem>
+                <SelectItem value="Manuală">Manuală</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
       
       <motion.div layout className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence>
           {isLoading && Array.from({ length: 6 }).map((_, i) => <CarCardSkeleton key={i} />)}
+          
           {isError && (
-              <div className="col-span-full mt-12 text-center text-muted-foreground flex flex-col items-center gap-2">
-                <AlertCircle className="w-8 h-8 text-destructive" />
+              <div className="col-span-full mt-12 flex flex-col items-center gap-2 text-center text-muted-foreground">
+                <AlertCircle className="h-8 w-8 text-destructive" />
                 <p>A apărut o eroare la încărcarea mașinilor.</p>
                 <p className="text-xs">Vă rugăm să reîncercați mai târziu.</p>
               </div>
           )}
-          {!isLoading && !isError && filtered.map((car) => (
+
+          {!isLoading && !isError && cars && cars.map((car) => (
             <CarCard key={car.id} car={car} />
           ))}
         </AnimatePresence>
       </motion.div>
 
-      {!isLoading && !isError && filtered.length === 0 && (
-        <p className="mt-12 text-center text-muted-foreground">
-          Nu am găsit nicio mașină. Încearcă alte filtre.
-        </p>
+      {!isLoading && !isError && cars?.length === 0 && (
+        <div className="col-span-full mt-12 flex flex-col items-center gap-3 text-center text-muted-foreground">
+          <Car className="h-10 w-10" />
+          <p>Nu am găsit nicio mașină care să corespundă filtrelor.</p>
+          <p className="text-xs">Încearcă să ajustezi căutarea.</p>
+        </div>
       )}
     </div>
   );
