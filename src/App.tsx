@@ -54,13 +54,13 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <div className="min-h-screen">
-          <div className="neon-frame" />
           <AnimatedRoutes />
           <Footer />
           <WhatsAppButton />
           <BottomNav />
           <CookieBanner />
         </div>
+        <div className="neon-frame" />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

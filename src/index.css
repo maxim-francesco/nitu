@@ -73,16 +73,9 @@
   /* New Neon Frame */
   .neon-frame {
     @apply pointer-events-none fixed inset-0 z-[9999];
-    border: 2px solid hsla(0, 0%, 100%, 0.3);
-    box-shadow: inset 0 0 15px hsla(0, 0%, 100%, 0.4),
-      0 0 20px hsla(0, 0%, 100%, 0.15);
-  }
-
-  @media (max-width: 768px) {
-    .neon-frame {
-      border-width: 1px;
-      box-shadow: inset 0 0 8px hsla(0, 0%, 100%, 0.25);
-    }
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 30px rgba(255, 255, 255, 0.4);
   }
   
   .glass-card {
