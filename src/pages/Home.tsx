@@ -90,7 +90,7 @@ const Home = () => {
         />
 
         <motion.div
-          className="absolute left-4 top-4 z-10 md:left-8 md:top-8"
+          className="absolute left-4 top-8 z-10 md:left-8 md:top-12"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -98,7 +98,7 @@ const Home = () => {
           <img
             src={logo}
             alt="Nițu Auto Park"
-            className="h-28 w-auto drop-shadow-xl md:h-32"
+            className="h-32 w-auto drop-shadow-xl md:h-40"
           />
         </motion.div>
 
