@@ -88,7 +88,7 @@ const Home = () => {
           alt="Showroom Nițu Auto Park"
           className="absolute inset-0 h-full w-full object-cover object-[28%_center] md:object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
         <div className="relative flex h-full flex-col items-center justify-end px-4 pb-16 text-center">
           <motion.img
             src={logo}
