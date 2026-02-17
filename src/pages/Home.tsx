@@ -90,7 +90,7 @@ const Home = () => {
         />
 
         <motion.div
-          className="absolute left-4 top-8 z-10 md:left-8 md:top-12"
+          className="absolute left-4 top-12 z-10 md:left-8 md:top-16"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
