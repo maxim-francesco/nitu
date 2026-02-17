@@ -54,7 +54,7 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         {/* This outer div provides the black 'gutter' through padding. */}
-        <div className="min-h-screen p-2 md:p-4">
+        <div className="min-h-screen bg-black p-2 md:p-4">
           {/* This inner div has the app's content and background. */}
           <div className="relative rounded-xl bg-background overflow-hidden">
             <AnimatedRoutes />
