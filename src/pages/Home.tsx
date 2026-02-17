@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Car, Shield, Star, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import heroImg from "@/assets/hero-car.jpg";
+import heroImg from "@/assets/nitubanner.png";
 import logo from "@/assets/logo.png";
 import SectionTitle from "@/components/SectionTitle";
 import { CarCard, CarCardSkeleton } from "@/components/CarCard";
