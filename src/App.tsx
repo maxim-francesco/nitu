@@ -53,7 +53,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen">
+          <div className="neon-frame" />
           <AnimatedRoutes />
           <Footer />
           <WhatsAppButton />
