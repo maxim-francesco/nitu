@@ -88,10 +88,9 @@ const Home = () => {
           alt="Showroom Nițu Auto Park"
           className="absolute inset-0 h-full w-full object-cover object-[28%_center] md:object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background" />
 
         <motion.div
-          className="absolute left-8 top-8 z-10"
+          className="absolute left-4 top-4 z-10 md:left-8 md:top-8"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
