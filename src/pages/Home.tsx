@@ -88,16 +88,22 @@ const Home = () => {
           alt="Showroom Nițu Auto Park"
           className="absolute inset-0 h-full w-full object-cover object-[28%_center] md:object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
-        <div className="relative flex h-full flex-col items-center justify-end px-4 pb-16 text-center">
-          <motion.img
+        <div className="absolute inset-0 bg-gradient-to-t from-background" />
+
+        <motion.div
+          className="absolute left-8 top-8 z-10"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <img
             src={logo}
             alt="Nițu Auto Park"
-            className="mb-6 h-28 w-auto drop-shadow-2xl md:h-40"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7 }}
+            className="h-20 w-auto drop-shadow-xl md:h-24"
           />
+        </motion.div>
+
+        <div className="relative flex h-full flex-col items-center justify-end px-4 pb-16 text-center">
           <motion.h1
             className="mb-3 text-3xl font-bold md:text-5xl"
             initial={{ opacity: 0, y: 20 }}
