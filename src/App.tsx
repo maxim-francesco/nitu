@@ -53,10 +53,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        {/* This outer div provides the black 'gutter' through padding. It's a flex container to allow the child to grow. */}
-        <div className="flex min-h-screen flex-col p-2 md:p-4">
-          {/* This inner div has the app's content, background, and grows to fill the padded space. */}
-          <div className="relative flex-1 rounded-xl bg-background overflow-hidden">
+        {/* This outer div provides the black 'gutter' through padding. */}
+        <div className="min-h-screen p-2 md:p-4">
+          {/* This inner div has the app's content and background. */}
+          <div className="relative rounded-xl bg-background overflow-hidden">
             <AnimatedRoutes />
             <Footer />
             <WhatsAppButton />
