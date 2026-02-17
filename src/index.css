@@ -77,20 +77,23 @@
   /* New Neon Frame */
   .neon-frame {
     position: fixed;
-    inset: 16px;
+    inset: 16px; /* Distance from screen edge */
     z-index: 9999;
     pointer-events: none;
-    border: 4px solid #FFFFFF;
-    border-radius: 12px;
-    box-shadow: 
-      0 0 20px rgba(255, 255, 255, 0.8), /* External neon glow */
-      inset 0 0 15px rgba(255, 255, 255, 0.5); /* Internal glow */
+    /* The solid black masking frame using a massive spread shadow */
+    box-shadow: 0 0 0 20px #000000; 
+    /* The actual neon border */
+    border: 6px solid #FFFFFF;
+    /* The neon glow effects */
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+    border-radius: 4px;
   }
 
   @media (max-width: 768px) {
     .neon-frame {
       inset: 8px;
       border-width: 3px;
+      box-shadow: 0 0 0 10px #000000;
     }
   }
   
