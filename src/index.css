@@ -84,8 +84,6 @@
     box-shadow: 0 0 0 20px #000000; 
     /* The actual neon border */
     border: 6px solid #FFFFFF;
-    /* The neon glow effects */
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
     border-radius: 4px;
   }
 
