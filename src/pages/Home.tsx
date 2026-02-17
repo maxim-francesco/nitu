@@ -99,7 +99,7 @@ const Home = () => {
           <img
             src={logo}
             alt="Nițu Auto Park"
-            className="h-20 w-auto drop-shadow-xl md:h-24"
+            className="h-28 w-auto drop-shadow-xl md:h-32"
           />
         </motion.div>
 
