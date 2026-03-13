@@ -3,10 +3,11 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   ArrowLeft, Calendar, Gauge, Fuel, Cog, Zap, Check,
   MessageCircle, Calculator, Shield, Truck, Award, AlertCircle,
-  X, ChevronLeft, ChevronRight,
+  X, ChevronLeft, ChevronRight, Share2, Copy,
 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import {
@@ -276,6 +277,68 @@ const CarDetails = () => {
               <MessageCircle size={18} />
               Contactează Vânzătorul
             </a>
+          </div>
+        </AnimatedSection>
+
+        {/* Share Section */}
+        <AnimatedSection delay={0.35}>
+          <div className="mt-8">
+            <h3 className="text-sm font-bold mb-3">Distribuie această mașină</h3>
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 -mx-4 px-4">
+              {navigator.share && (
+                <button
+                  onClick={async () => {
+                    try {
+                      await navigator.share({
+                        title: car.title,
+                        text: `${car.title} - ${car.price ? car.price.toLocaleString("ro-RO") + " €" : "Preț la cerere"}`,
+                        url: window.location.href,
+                      });
+                    } catch (error) {
+                      if ((error as Error).name !== 'AbortError') {
+                        toast.error("Partajarea nu a putut fi finalizată.");
+                      }
+                    }
+                  }}
+                  className="btn-gold rounded-full px-4 py-2 text-xs font-semibold flex items-center justify-center gap-2 shrink-0 active:scale-95"
+                >
+                  <Share2 size={14} />
+                  <span>Distribuie</span>
+                </button>
+              )}
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Distribuie pe Facebook"
+                className="btn-outline-gold rounded-full px-4 py-2 text-xs font-semibold flex items-center justify-center gap-2 shrink-0 active:scale-95"
+              >
+                <svg role="img" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2Z"/>
+                </svg>
+                <span>Facebook</span>
+              </a>
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(`${car.title} - ${car.price ? car.price.toLocaleString("ro-RO") + " €" : "Preț la cerere"}\n${window.location.href}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Distribuie pe WhatsApp"
+                className="btn-outline-gold rounded-full px-4 py-2 text-xs font-semibold flex items-center justify-center gap-2 shrink-0 active:scale-95"
+              >
+                <MessageCircle size={14} />
+                <span>WhatsApp</span>
+              </a>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  toast.success("Link-ul a fost copiat în clipboard!");
+                }}
+                className="btn-outline-gold rounded-full px-4 py-2 text-xs font-semibold flex items-center justify-center gap-2 shrink-0 active:scale-95"
+              >
+                <Copy size={14} />
+                <span>Copiază</span>
+              </button>
+            </div>
           </div>
         </AnimatedSection>
 
