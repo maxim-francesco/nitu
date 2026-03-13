@@ -306,10 +306,19 @@ const CarDetails = () => {
                   <span>Distribuie</span>
                 </button>
               )}
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.nituautopark.ro/masini/${car.id}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => {
+                  const url = `https://www.nituautopark.ro/masini/${car.id}`;
+                  const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+                  
+                  // Pe mobil, Web Share API e mai reliable decât Facebook sharer
+                  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                    navigator.clipboard.writeText(url);
+                    toast.success("Link copiat! Îl poți lipi direct în Facebook.");
+                  } else {
+                    window.open(fbUrl, '_blank', 'noopener,noreferrer');
+                  }
+                }}
                 aria-label="Distribuie pe Facebook"
                 className="btn-outline-gold rounded-full px-4 py-2 text-xs font-semibold flex items-center justify-center gap-2 shrink-0 active:scale-95"
               >
@@ -317,7 +326,7 @@ const CarDetails = () => {
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2Z"/>
                 </svg>
                 <span>Facebook</span>
-              </a>
+              </button>
               <a
                 href={`https://wa.me/?text=${encodeURIComponent(`${car.title} - ${car.price ? car.price.toLocaleString("ro-RO") + " €" : "Preț la cerere"}\nhttps://www.nituautopark.ro/masini/${car.id}`)}`}
                 target="_blank"
