@@ -307,7 +307,7 @@ const CarDetails = () => {
                 </button>
               )}
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://nitu-auto.ro/masini/${car.id}`)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.nituautopark.ro/masini/${car.id}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Distribuie pe Facebook"
@@ -319,7 +319,7 @@ const CarDetails = () => {
                 <span>Facebook</span>
               </a>
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(`${car.title} - ${car.price ? car.price.toLocaleString("ro-RO") + " €" : "Preț la cerere"}\n${window.location.href}`)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(`${car.title} - ${car.price ? car.price.toLocaleString("ro-RO") + " €" : "Preț la cerere"}\nhttps://www.nituautopark.ro/masini/${car.id}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Distribuie pe WhatsApp"
