@@ -307,7 +307,7 @@ const CarDetails = () => {
                 </button>
               )}
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://nitu-auto.ro/masini/${car.id}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Distribuie pe Facebook"
