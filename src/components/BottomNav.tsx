@@ -16,7 +16,7 @@ const BottomNav = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 pb-safe" role="navigation" aria-label="Navigație principală">
       <div className="mx-2 mb-2 rounded-2xl glass-card border-gold/20 border px-1 py-1">
         <div className="flex items-center justify-around">
           {navItems.map((item) => {
@@ -25,6 +25,7 @@ const BottomNav = () => {
               <button
                 key={item.path}
                 onClick={() => navigate(item.path)}
+                aria-label={`Mergi la pagina ${item.label}`}
                 className="relative flex flex-col items-center gap-0.5 px-2 py-2 transition-transform active:scale-90"
               >
                 {isActive && (

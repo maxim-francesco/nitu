@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
+import PageMeta from "@/components/PageMeta";
 
 const contactInfo = [
   { icon: MapPin, label: "Adresa", value: "Bulevardul Nicolae Bălcescu, 105600, Câmpina, România" },
@@ -11,6 +12,12 @@ const contactInfo = [
 
 const Contact = () => (
   <div className="section-padding pb-24">
+    <PageMeta 
+      title="Contact | Nițu Auto Park" 
+      description="Contactează-ne pentru orice întrebare. Bulevardul Nicolae Bălcescu, Câmpina." 
+      canonicalUrl="https://www.nituautopark.ro/contact"
+      ogUrl="https://www.nituautopark.ro/contact"
+    />
     <SectionTitle title="Contact & Locație" subtitle="Vino să ne cunoști" gold />
 
     {/* Map */}

@@ -19,7 +19,7 @@ const SpecItem = ({ icon: Icon, value, label }: { icon: React.ElementType, value
     )
 }
 
-export const CarCard = ({ car }: { car: Listing }) => {
+export const CarCard = ({ car, priority = false }: { car: Listing, priority?: boolean }) => {
   const navigate = useNavigate();
 
   const carImage = car.images?.[0]?.url || placeholderImg;
@@ -28,7 +28,7 @@ export const CarCard = ({ car }: { car: Listing }) => {
   const transmission = getAttribute(car, 'cutie de viteze');
 
   return (
-    <motion.div
+    <motion.article
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -36,9 +36,25 @@ export const CarCard = ({ car }: { car: Listing }) => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="glass-card-gold flex cursor-pointer flex-col overflow-hidden group"
       onClick={() => navigate(`/masini/${car.id}`)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigate(`/masini/${car.id}`);
+        }
+      }}
     >
       <div className="relative h-48 overflow-hidden">
-        <img src={carImage} alt={car.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+        <img 
+          src={carImage} 
+          alt={car.title} 
+          width={600}
+          height={400}
+          loading={priority ? "eager" : "lazy"}
+          fetchpriority={priority ? "high" : "auto"}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
+        />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-card p-3">
           <span className="rounded-full bg-primary/20 px-3 py-1 text-xs font-semibold text-primary">
             {car.category.name}
@@ -67,7 +83,7 @@ export const CarCard = ({ car }: { car: Listing }) => {
             </div>
         </div>
       </div>
-    </motion.div>
+    </motion.article>
   );
 };
 

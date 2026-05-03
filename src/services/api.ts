@@ -1,6 +1,29 @@
 import { API_BASE_URL, BUSINESS_ID } from "@/config/api";
 import type { Listing, DetailedListing, Filters, ContactFormData } from "@/types";
 
+export class ApiError extends Error {
+  constructor(public message: string, public status?: number) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
+const fetchWithTimeout = async (url: string, options: RequestInit = {}) => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), 5000);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new ApiError('Cererea a depășit timpul limită (5 secunde).');
+    }
+    throw error instanceof Error ? new ApiError(error.message) : new ApiError('Eroare necunoscută');
+  }
+};
+
 /**
  * Fetches a list of available car listings based on filters.
  * @param filters An object containing filter criteria.
@@ -26,12 +49,12 @@ export const getListings = async (filters: Filters = {}): Promise<Listing[]> => 
     }
   }
 
-  const response = await fetch(`${API_BASE_URL}/public/listings/search?${params.toString()}`);
+  const response = await fetchWithTimeout(`${API_BASE_URL}/public/listings/search?${params.toString()}`);
 
   if (!response.ok) {
     const errorBody = await response.text();
     console.error("Failed to fetch listings:", response.status, errorBody);
-    throw new Error(`A eșuat preluarea anunțurilor. Status: ${response.status}`);
+    throw new ApiError(`A eșuat preluarea anunțurilor. Status: ${response.status}`, response.status);
   }
 
   const result = await response.json();
@@ -44,12 +67,12 @@ export const getListings = async (filters: Filters = {}): Promise<Listing[]> => 
  * @returns A promise that resolves to the detailed listing object.
  */
 export const getListingById = async (id: string): Promise<DetailedListing> => {
-  const response = await fetch(`${API_BASE_URL}/public/listings/${id}`);
+  const response = await fetchWithTimeout(`${API_BASE_URL}/public/listings/${id}`);
 
   if (!response.ok) {
     const errorBody = await response.text();
     console.error(`Failed to fetch listing ${id}:`, response.status, errorBody);
-    throw new Error(`A eșuat preluarea anunțului. Status: ${response.status}`);
+    throw new ApiError(`A eșuat preluarea anunțului. Status: ${response.status}`, response.status);
   }
 
   return await response.json();
@@ -66,7 +89,7 @@ export const submitContactForm = async (data: ContactFormData): Promise<any> => 
     businessId: BUSINESS_ID,
   };
 
-  const response = await fetch(`${API_BASE_URL}/public/contact`, {
+  const response = await fetchWithTimeout(`${API_BASE_URL}/public/contact`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -77,7 +100,7 @@ export const submitContactForm = async (data: ContactFormData): Promise<any> => 
   if (!response.ok) {
     const errorBody = await response.json().catch(() => ({ message: "A apărut o eroare la trimiterea formularului." }));
     console.error("Form submission error:", errorBody);
-    throw new Error(errorBody.message || "A eșuat trimiterea formularului.");
+    throw new ApiError(errorBody.message || "A eșuat trimiterea formularului.", response.status);
   }
 
   return await response.json();

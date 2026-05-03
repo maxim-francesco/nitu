@@ -13,6 +13,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 import {
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
 } from "@/components/ui/carousel";
+import { CarStructuredData } from "@/components/CarStructuredData";
 import { getListingById } from "@/services/api";
 import { getAttribute } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -77,6 +78,14 @@ const CarDetails = () => {
         document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', newTitle);
         document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', metaDesc);
         document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', metaImg);
+
+        let canonicalTag = document.querySelector('link[rel="canonical"]');
+        if (!canonicalTag) {
+          canonicalTag = document.createElement("link");
+          canonicalTag.setAttribute("rel", "canonical");
+          document.head.appendChild(canonicalTag);
+        }
+        canonicalTag.setAttribute("href", window.location.href);
     }
 
     // Cleanup on unmount
@@ -91,10 +100,11 @@ const CarDetails = () => {
         document.querySelector('meta[property="og:title"]')?.setAttribute('content', defaultTitle);
         document.querySelector('meta[property="og:description"]')?.setAttribute('content', defaultDesc);
         document.querySelector('meta[property="og:image"]')?.setAttribute('content', defaultImg);
-        document.querySelector('meta[property="og:url"]')?.setAttribute('content', window.location.origin);
+        document.querySelector('meta[property="og:url"]')?.setAttribute('content', 'https://www.nituautopark.ro');
         document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', defaultTitle);
         document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', defaultDesc);
         document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', defaultImg);
+        document.querySelector('link[rel="canonical"]')?.setAttribute('href', 'https://www.nituautopark.ro');
     };
   }, [car]);
 
@@ -173,6 +183,7 @@ const CarDetails = () => {
 
   return (
     <div className="pb-24">
+      <CarStructuredData car={car} />
       {/* Back button */}
       <div className="fixed left-4 top-4 z-40">
         <motion.button
@@ -193,7 +204,15 @@ const CarDetails = () => {
             {images.map((img, index) => (
               <CarouselItem key={img.id} onClick={() => openLightbox(index)} className="cursor-pointer">
                 <div className="relative h-72 sm:h-96 overflow-hidden">
-                  <img src={img.url} alt={`${car.title}`} className="h-full w-full object-cover" />
+                  <img 
+                    src={img.url} 
+                    alt={`Imagine ${index + 1} cu ${car.title}`} 
+                    width={800}
+                    height={600}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchpriority={index === 0 ? "high" : "auto"}
+                    className="h-full w-full object-cover" 
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
                 </div>
               </CarouselItem>
@@ -343,13 +362,18 @@ const CarDetails = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md"
             onClick={closeLightbox}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Galerie foto ${car.title}`}
           >
             {/* Close Button */}
             <motion.button
+              autoFocus
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1, transition: { delay: 0.2 } }}
               exit={{ opacity: 0, scale: 0.5 }}
               onClick={closeLightbox}
+              aria-label="Închide galeria"
               className="absolute right-4 top-4 z-[52] flex h-10 w-10 items-center justify-center rounded-full bg-card/50 backdrop-blur-sm transition-all hover:bg-card/80 active:scale-90"
             >
               <X size={24} className="gold-icon" />
@@ -386,7 +410,10 @@ const CarDetails = () => {
                   <motion.img
                       key={images[selectedIndex].id}
                       src={images[selectedIndex].url}
-                      alt={car.title}
+                      alt={`Vedere detaliată imagine ${selectedIndex + 1} cu ${car.title}`}
+                      width={1200}
+                      height={800}
+                      loading="lazy"
                       initial={{ opacity: 0.8, scale: 0.98 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0.8, scale: 0.98 }}

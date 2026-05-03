@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Truck, FileText, AlertTriangle, Shield, BadgeCheck } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
+import PageMeta from "@/components/PageMeta";
 
 const services = [
   {
@@ -32,6 +33,12 @@ const fadeUp = {
 
 const Services = () => (
   <div className="section-padding pb-24">
+    <PageMeta 
+      title="Servicii | Nițu Auto Park" 
+      description="Livrare pe platformă, numere roșii, verificare tehnică și garanție inclusă." 
+      canonicalUrl="https://www.nituautopark.ro/servicii"
+      ogUrl="https://www.nituautopark.ro/servicii"
+    />
     <SectionTitle title="Serviciile Noastre" subtitle="Tot ce ai nevoie, într-un singur loc" gold />
 
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

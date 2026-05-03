@@ -18,4 +18,29 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    target: "es2020",
+    cssCodeSplit: true,
+    reportCompressedSize: false,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("node_modules/react/") || id.includes("node_modules/react-dom/")) {
+              return "react-vendor";
+            }
+            if (id.includes("node_modules/framer-motion/")) {
+              return "framer-motion";
+            }
+            if (id.includes("node_modules/@tanstack/react-query/")) {
+              return "query";
+            }
+            if (id.includes("node_modules/@radix-ui/")) {
+              return "radix";
+            }
+          }
+        },
+      },
+    },
+  },
 }));

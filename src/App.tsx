@@ -4,25 +4,41 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import Home from "./pages/Home";
-import Inventory from "./pages/Inventory";
-import CarDetails from "./pages/CarDetails";
-import Financing from "./pages/Financing";
-import CustomOrder from "./pages/CustomOrder";
-import Services from "./pages/Services";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
+import { Suspense, lazy } from "react";
+
+const Home = lazy(() => import("./pages/Home"));
+const Inventory = lazy(() => import("./pages/Inventory"));
+const CarDetails = lazy(() => import("./pages/CarDetails"));
+const Financing = lazy(() => import("./pages/Financing"));
+const CustomOrder = lazy(() => import("./pages/CustomOrder"));
+const Services = lazy(() => import("./pages/Services"));
+const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 import BottomNav from "./components/BottomNav";
 import WhatsAppButton from "./components/WhatsAppButton";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import ScrollToTop from "./components/ScrollToTop";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import CookiePolicy from "./pages/CookiePolicy";
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 import CookieBanner from "./components/CookieBanner";
+import GoogleAnalytics from "./components/GoogleAnalytics";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
+
+const PageLoader = () => (
+  <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent drop-shadow-[0_0_8px_rgba(255,184,0,0.5)]" />
+  </div>
+);
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -46,21 +62,28 @@ const AnimatedRoutes = () => {
   );
 };
 
+import { MotionConfig } from "framer-motion";
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <GoogleAnalytics measurementId="G-INLOCUIESTE_ACEST_ID" />
       <BrowserRouter>
-        <ScrollToTop />
-        <div className="relative min-h-screen bg-background">
-          <AnimatedRoutes />
-          <Footer />
-          <WhatsAppButton />
-          <BottomNav />
-          <CookieBanner />
-        </div>
-        <div className="neon-frame" />
+        <MotionConfig reducedMotion="user">
+          <ScrollToTop />
+          <div className="relative min-h-screen bg-background">
+            <Suspense fallback={<PageLoader />}>
+              <AnimatedRoutes />
+            </Suspense>
+            <Footer />
+            <WhatsAppButton />
+            <BottomNav />
+            <CookieBanner />
+          </div>
+          <div className="neon-frame" />
+        </MotionConfig>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

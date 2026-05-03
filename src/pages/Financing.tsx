@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import tbiLogo from "@/assets/tbi_bank.png";
 import mogoLogo from "@/assets/mogo.png";
+import PageMeta from "@/components/PageMeta";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -32,6 +33,12 @@ const Financing = () => {
 
   return (
     <div className="section-padding pb-24">
+      <PageMeta 
+        title="Finanțare Auto | Nițu Auto Park" 
+        description="Aprobare rapidă pentru rate auto doar cu buletinul, inclusiv pentru istoric negativ în biroul de credit." 
+        canonicalUrl="https://www.nituautopark.ro/finantare"
+        ogUrl="https://www.nituautopark.ro/finantare"
+      />
       <SectionTitle title="Finanțare Auto" subtitle="Rate doar cu buletinul — simplu și rapid" gold />
 
       <motion.div
@@ -54,6 +61,10 @@ const Financing = () => {
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
             className="w-full accent-primary"
+            aria-label="Valoare mașină"
+            aria-valuemin={3000}
+            aria-valuemax={60000}
+            aria-valuenow={amount}
           />
         </div>
         <div className="mb-6">
@@ -69,6 +80,10 @@ const Financing = () => {
             value={months}
             onChange={(e) => setMonths(Number(e.target.value))}
             className="w-full accent-primary"
+            aria-label="Perioadă creditare în luni"
+            aria-valuemin={12}
+            aria-valuemax={84}
+            aria-valuenow={months}
           />
         </div>
         <div className="rounded-xl bg-muted/50 p-4 text-center">
@@ -87,7 +102,7 @@ const Financing = () => {
           whileInView="show"
           viewport={{ once: true }}
         >
-          <img src={tbiLogo} alt="TBI Bank" className="mb-4 h-10 w-auto self-start rounded bg-white px-2 py-1" />
+          <img src={tbiLogo} alt="Logo partener de finanțare TBI Bank" className="mb-4 h-10 w-auto self-start rounded bg-white px-2 py-1" />
           <div className="flex-grow">
             <p className="text-muted-foreground text-sm mb-4">
               Soluții de finanțare flexibile pentru persoane fizice și juridice, cu aprobare rapidă.
@@ -150,7 +165,7 @@ const Financing = () => {
           whileInView="show"
           viewport={{ once: true, delay: 0.1 }}
         >
-          <img src={mogoLogo} alt="Mogo" className="mb-4 h-10 w-auto self-start rounded bg-white px-2 py-1" />
+          <img src={mogoLogo} alt="Logo partener de finanțare Mogo" className="mb-4 h-10 w-auto self-start rounded bg-white px-2 py-1" />
           <div className="flex-grow">
             <p className="text-muted-foreground text-sm mb-4">
               Credit auto rapid și accesibil, chiar și pentru situații financiare mai complexe.

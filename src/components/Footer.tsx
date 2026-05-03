@@ -9,7 +9,7 @@ const Footer = () => (
         {/* Top Row: Logo & Description */}
         <div className="flex flex-col items-center gap-4">
           <Link to="/">
-            <img src={logo} alt="Nițu Auto Park" className="h-16 w-auto" />
+            <img src={logo} alt="Logo Nițu Auto Park" width={200} height={100} loading="lazy" className="h-16 w-auto" />
           </Link>
           <p className="max-w-md text-sm text-muted-foreground">
             Dealer premium de mașini second-hand în Câmpina. Finanțare, livrare națională și servicii complete.
@@ -34,12 +34,12 @@ const Footer = () => (
         
         {/* Bottom Row: Legal Icons, Business Info, Credits */}
         <div className="flex flex-col items-center gap-6 text-xs text-muted-foreground/80">
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col gap-2">
             <a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener noreferrer" aria-label="Soluționarea Alternativă a Litigiilor">
-              <img src="https://anpc.ro/wp-content/uploads/2022/07/SAL-PICTOGRAMA.png" alt="SAL" className="h-10 md:h-12 transition-transform hover:scale-105" />
+              <img src="https://anpc.ro/wp-content/uploads/2022/07/SAL-PICTOGRAMA.png" alt="Soluționarea Alternativă a Litigiilor (SAL) - ANPC" width={250} height={80} loading="lazy" className="h-10 md:h-12 transition-transform hover:scale-105" />
             </a>
             <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" aria-label="Soluționarea Online a Litigiilor">
-              <img src="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png" alt="SOL" className="h-10 md:h-12 transition-transform hover:scale-105" />
+              <img src="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png" alt="Soluționarea Online a Litigiilor (SOL) - ANPC" width={250} height={80} loading="lazy" className="h-10 md:h-12 transition-transform hover:scale-105" />
             </a>
           </div>
           <div className="space-y-1">

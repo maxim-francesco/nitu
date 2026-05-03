@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/services/api";
+import PageMeta from "@/components/PageMeta";
 
 const steps = [
   { icon: Car, label: "Tipul Mașinii" },
@@ -116,6 +117,12 @@ ${data.details || "Niciun detaliu suplimentar."}
 
   return (
     <div className="section-padding pb-24">
+      <PageMeta 
+        title="Mașini la Comandă | Nițu Auto Park" 
+        description="Spune-ne ce cauți și noi găsim mașina perfectă pentru tine și bugetul tău." 
+        canonicalUrl="https://www.nituautopark.ro/comanda"
+        ogUrl="https://www.nituautopark.ro/comanda"
+      />
       <SectionTitle
         title="Mașini la Comandă"
         subtitle="Spune-ne ce cauți și noi o găsim pentru tine"
@@ -185,28 +192,28 @@ ${data.details || "Niciun detaliu suplimentar."}
                   <FormField control={form.control} name="name" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Nume și Prenume</FormLabel>
-                      <FormControl><Input placeholder="ex: Ion Popescu" {...field} /></FormControl>
+                      <FormControl><Input placeholder="ex: Ion Popescu" aria-label="Nume și Prenume" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
                   <FormField control={form.control} name="email" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Adresă de Email</FormLabel>
-                      <FormControl><Input type="email" placeholder="ex: ion.popescu@email.com" {...field} /></FormControl>
+                      <FormControl><Input type="email" placeholder="ex: ion.popescu@email.com" aria-label="Adresă de Email" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
                   <FormField control={form.control} name="phone" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Telefon (Opțional)</FormLabel>
-                      <FormControl><Input type="tel" placeholder="ex: 0712 345 678" {...field} /></FormControl>
+                      <FormControl><Input type="tel" placeholder="ex: 0712 345 678" aria-label="Telefon" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
                   <FormField control={form.control} name="details" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Alte detalii (Opțional)</FormLabel>
-                      <FormControl><Textarea placeholder="Caut o mașină de familie, an fabricație după 2020..." {...field} /></FormControl>
+                      <FormControl><Textarea placeholder="Caut o mașină de familie, an fabricație după 2020..." aria-label="Alte detalii" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />

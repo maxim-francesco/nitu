@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Filters } from "@/types";
+import PageMeta from "@/components/PageMeta";
 
 const Inventory = () => {
   // UI state for direct feedback
@@ -57,7 +58,6 @@ const Inventory = () => {
     queryFilters["Cutie de viteze"] = transmission;
   }
 
-  console.log("Sending filters:", queryFilters); // For debugging
 
   // Fetch data using React Query. It will re-fetch whenever queryFilters changes.
   const { data: cars, isLoading, isError } = useQuery({
@@ -68,6 +68,12 @@ const Inventory = () => {
 
   return (
     <div className="section-padding pb-24">
+      <PageMeta 
+        title="Mașini în Stoc | Nițu Auto Park" 
+        description="Descoperă oferta noastră curentă de mașini premium rulate. Garanție, verificare și finanțare rapidă." 
+        canonicalUrl="https://www.nituautopark.ro/masini"
+        ogUrl="https://www.nituautopark.ro/masini"
+      />
       <SectionTitle title="Mașini în Stoc" subtitle="Descoperă oferta noastră curentă" gold />
 
       <div className="mb-8 space-y-4">

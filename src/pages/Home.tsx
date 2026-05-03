@@ -7,6 +7,7 @@ import logo from "@/assets/logo.png";
 import SectionTitle from "@/components/SectionTitle";
 import { CarCard, CarCardSkeleton } from "@/components/CarCard";
 import { getListings } from "@/services/api";
+import PageMeta from "@/components/PageMeta";
 
 const stats = [
   { icon: Car, value: "200+", label: "Mașini Vândute" },
@@ -44,8 +45,8 @@ const RecentlyAdded = () => {
       >
         {isLoading && Array.from({ length: 3 }).map((_, i) => <CarCardSkeleton key={i} />)}
         
-        {!isLoading && !isError && recentCars && recentCars.map((car) => (
-          <CarCard key={car.id} car={car} />
+        {!isLoading && !isError && recentCars && recentCars.map((car, index) => (
+          <CarCard key={car.id} car={car} priority={index === 0} />
         ))}
       </motion.div>
 
@@ -81,11 +82,21 @@ const Home = () => {
 
   return (
     <div>
+      <PageMeta 
+        title="Nițu Auto Park | Mașini Rulate Premium" 
+        description="Dealer premium de mașini second-hand în Câmpina. Finanțare, livrare și servicii complete." 
+        canonicalUrl="https://www.nituautopark.ro/"
+        ogUrl="https://www.nituautopark.ro/"
+      />
       {/* Hero */}
       <section className="relative h-[85vh] min-h-[500px] overflow-hidden">
         <img
           src={heroImg}
           alt="Showroom Nițu Auto Park"
+          width={1920}
+          height={1080}
+          loading="eager"
+          fetchpriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[28%_center] md:object-center"
         />
 
@@ -97,7 +108,10 @@ const Home = () => {
         >
           <img
             src={logo}
-            alt="Nițu Auto Park"
+            alt="Logo Nițu Auto Park"
+            width={300}
+            height={160}
+            loading="lazy"
             className="h-32 w-auto drop-shadow-xl md:h-40"
           />
         </motion.div>
