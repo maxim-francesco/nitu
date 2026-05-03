@@ -52,18 +52,26 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    target: "es2020",
     cssCodeSplit: true,
     reportCompressedSize: false,
+    target: 'es2020',
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'motion': ['framer-motion'],
-          'query': ['@tanstack/react-query'],
-          'ui': ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-slider'],
-        },
-      },
-    },
+        manualChunks: (id: string) => {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
+            return 'react-vendor';
+          }
+          if (id.includes('node_modules/framer-motion')) {
+            return 'motion';
+          }
+          if (id.includes('node_modules/@tanstack')) {
+            return 'query';
+          }
+          if (id.includes('node_modules/@radix-ui')) {
+            return 'ui';
+          }
+        }
+      }
+    }
   },
 }));
