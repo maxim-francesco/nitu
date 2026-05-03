@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Calendar, Gauge, Fuel, Cog, ArrowRight } from "lucide-react";
 import type { Listing } from "@/types";
 import { getAttribute } from "@/types";
+import { getOptimizedImageUrl } from "@/lib/cloudinary";
 import { Skeleton } from "@/components/ui/skeleton";
 import placeholderImg from "@/assets/car-sedan.jpg";
 
@@ -22,7 +23,9 @@ const SpecItem = ({ icon: Icon, value, label }: { icon: React.ElementType, value
 export const CarCard = ({ car, priority = false }: { car: Listing, priority?: boolean }) => {
   const navigate = useNavigate();
 
-  const carImage = car.images?.[0]?.url || placeholderImg;
+  const carImage = car.images?.[0]?.url 
+    ? getOptimizedImageUrl(car.images[0].url, 640, 360) 
+    : placeholderImg;
   const year = getAttribute(car, 'an');
   const fuel = getAttribute(car, 'combustibil');
   const transmission = getAttribute(car, 'cutie de viteze');
@@ -34,27 +37,34 @@ export const CarCard = ({ car, priority = false }: { car: Listing, priority?: bo
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="glass-card-gold flex cursor-pointer flex-col overflow-hidden group"
-      onClick={() => navigate(`/masini/${car.id}`)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          navigate(`/masini/${car.id}`);
-        }
-      }}
+      className="glass-card-gold flex flex-col overflow-hidden group"
     >
-      <div className="relative h-48 overflow-hidden">
-        <img 
-          src={carImage} 
-          alt={car.title} 
-          width={600}
-          height={400}
-          loading={priority ? "eager" : "lazy"}
-          fetchpriority={priority ? "high" : "auto"}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
-        />
+      <div 
+        className="flex h-full w-full flex-col cursor-pointer"
+        onClick={() => navigate(`/masini/${car.id}`)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            navigate(`/masini/${car.id}`);
+          }
+        }}
+      >
+      <div className="relative aspect-[16/9] w-full overflow-hidden">
+        {/* TODO: Convertește car-sedan.jpg în WebP (car-sedan.webp) și încarcă-l în public/ pentru imagini fallback mai rapide */}
+        <picture>
+          {/* <source srcSet="/car-sedan.webp" type="image/webp" /> */}
+          <img 
+            src={carImage} 
+            alt={car.title} 
+            width={640}
+            height={360}
+            loading={priority ? "eager" : "lazy"}
+            fetchpriority={priority ? "high" : "auto"}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
+          />
+        </picture>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-card p-3">
           <span className="rounded-full bg-primary/20 px-3 py-1 text-xs font-semibold text-primary">
             {car.category.name}
@@ -83,13 +93,14 @@ export const CarCard = ({ car, priority = false }: { car: Listing, priority?: bo
             </div>
         </div>
       </div>
+      </div>
     </motion.article>
   );
 };
 
 export const CarCardSkeleton = () => (
     <div className="glass-card-gold flex flex-col overflow-hidden">
-        <Skeleton className="h-48 w-full" />
+        <Skeleton className="aspect-[16/9] w-full" />
         <div className="flex flex-1 flex-col p-4">
             <div className="flex justify-between">
                 <Skeleton className="h-5 w-3/4" />

@@ -3,6 +3,8 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import PageMeta from "@/components/PageMeta";
 
+import LazyIframe from "@/components/LazyIframe";
+
 const contactInfo = [
   { icon: MapPin, label: "Adresa", value: "Bulevardul Nicolae Bălcescu, 105600, Câmpina, România" },
   { icon: Phone, label: "Telefon", value: "0745 461 202" },
@@ -26,14 +28,15 @@ const Contact = () => (
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2815.7721034959973!2d25.744898199999994!3d45.1106876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b3ab680224cf41%3A0x60af4cb8f704c587!2sAuto-Park%20Ni%C8%9Bu!5e0!3m2!1sen!2sro!4v1770563591102!5m2!1sen!2sro"
+      <LazyIframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2815.7721034959973!2d25.744898199999994!3d45.1106876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b3ab680224cf41%3A0x60af4cb8f704c587!2sAuto-Park%20Ni%C8%9Bu!5e0!3m2!1sen!2sro!4v1770563591102!5m2!1sen!2sro&hl=ro"
         width="100%"
         height="250"
         style={{ border: 0 }}
         allowFullScreen
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
+        sandbox="allow-scripts allow-same-origin allow-popups"
         title="Locație Nițu Auto Park"
       />
     </motion.div>

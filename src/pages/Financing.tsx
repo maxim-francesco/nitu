@@ -26,6 +26,7 @@ const Financing = () => {
   const [months, setMonths] = useState(48);
   const rate = 0.009; // monthly
   const monthly = Math.round((amount * (rate * Math.pow(1 + rate, months))) / (Math.pow(1 + rate, months) - 1));
+  const [openAccordion, setOpenAccordion] = useState<string | undefined>("item-1");
 
   const handleRequestOffer = () => {
     navigate("/contact");
@@ -107,48 +108,56 @@ const Financing = () => {
             <p className="text-muted-foreground text-sm mb-4">
               Soluții de finanțare flexibile pentru persoane fizice și juridice, cu aprobare rapidă.
             </p>
-            <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
+            <Accordion type="single" collapsible value={openAccordion} onValueChange={setOpenAccordion} className="w-full">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Persoane Fizice</AccordionTrigger>
                 <AccordionContent className="prose prose-sm prose-invert max-w-none text-muted-foreground">
-                  <h4 className="text-foreground">Criterii de eligibilitate:</h4>
-                  <ul>
-                    <li>Vârstă între 18 și 75 de ani.</li>
-                    <li>Minim 3 luni la actualul angajator.</li>
-                    <li>Salariu minim: 2000 RON / Pensie minimă: 1250 RON.</li>
-                  </ul>
-                  <h4 className="text-foreground">Venituri acceptate:</h4>
-                  <p>Salarii, pensii, PFA, diurne, chirii, dividente, indemnizații.</p>
-                  <h4 className="text-foreground">Bonus:</h4>
-                  <p>Acceptăm codebitor pentru susținerea dosarului.</p>
-                  <h4 className="text-foreground">Detalii finanțare:</h4>
-                  <ul>
-                    <li>Sume între 3.000 și 150.000 RON.</li>
-                    <li>Răspuns rapid: 15 - 120 minute.</li>
-                  </ul>
-                  <h4 className="text-foreground">Venituri din străinătate:</h4>
-                  <p>
-                    Contract de muncă pe perioadă nedeterminată cu minim 6 luni vechime. Este necesar un girant cu
-                    venituri din România doar dacă nu aveți istoric de credit în ultimii 5 ani.
-                  </p>
+                  {openAccordion === "item-1" && (
+                    <>
+                      <h4 className="text-foreground">Criterii de eligibilitate:</h4>
+                      <ul>
+                        <li>Vârstă între 18 și 75 de ani.</li>
+                        <li>Minim 3 luni la actualul angajator.</li>
+                        <li>Salariu minim: 2000 RON / Pensie minimă: 1250 RON.</li>
+                      </ul>
+                      <h4 className="text-foreground">Venituri acceptate:</h4>
+                      <p>Salarii, pensii, PFA, diurne, chirii, dividente, indemnizații.</p>
+                      <h4 className="text-foreground">Bonus:</h4>
+                      <p>Acceptăm codebitor pentru susținerea dosarului.</p>
+                      <h4 className="text-foreground">Detalii finanțare:</h4>
+                      <ul>
+                        <li>Sume între 3.000 și 150.000 RON.</li>
+                        <li>Răspuns rapid: 15 - 120 minute.</li>
+                      </ul>
+                      <h4 className="text-foreground">Venituri din străinătate:</h4>
+                      <p>
+                        Contract de muncă pe perioadă nedeterminată cu minim 6 luni vechime. Este necesar un girant cu
+                        venituri din România doar dacă nu aveți istoric de credit în ultimii 5 ani.
+                      </p>
+                    </>
+                  )}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
                 <AccordionTrigger>Persoane Juridice</AccordionTrigger>
                 <AccordionContent className="prose prose-sm prose-invert max-w-none text-muted-foreground">
-                  <h4 className="text-foreground">Criterii de eligibilitate:</h4>
-                  <ul>
-                    <li>Vechime firmă: minim 1 an.</li>
-                    <li>
-                      Cifra de afaceri: minim 500.000 RON (1.500.000 RON pentru transport/construcții).
-                    </li>
-                    <li>Ultimul bilanț contabil depus.</li>
-                  </ul>
-                  <h4 className="text-foreground">Detalii finanțare:</h4>
-                  <ul>
-                    <li>Finanțare de până la 250.000 RON.</li>
-                    <li>Suma maximă finanțată: 10% din cifra de afaceri.</li>
-                  </ul>
+                  {openAccordion === "item-2" && (
+                    <>
+                      <h4 className="text-foreground">Criterii de eligibilitate:</h4>
+                      <ul>
+                        <li>Vechime firmă: minim 1 an.</li>
+                        <li>
+                          Cifra de afaceri: minim 500.000 RON (1.500.000 RON pentru transport/construcții).
+                        </li>
+                        <li>Ultimul bilanț contabil depus.</li>
+                      </ul>
+                      <h4 className="text-foreground">Detalii finanțare:</h4>
+                      <ul>
+                        <li>Finanțare de până la 250.000 RON.</li>
+                        <li>Suma maximă finanțată: 10% din cifra de afaceri.</li>
+                      </ul>
+                    </>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

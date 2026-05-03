@@ -90,15 +90,19 @@ const Home = () => {
       />
       {/* Hero */}
       <section className="relative h-[85vh] min-h-[500px] overflow-hidden">
-        <img
-          src={heroImg}
-          alt="Showroom Nițu Auto Park"
-          width={1920}
-          height={1080}
-          loading="eager"
-          fetchpriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-[28%_center] md:object-center"
-        />
+        {/* TODO: Pentru performanță maximă, convertește manual nitubanner.png în format WebP și plasează-l în folderul public/ */}
+        <picture>
+          {/* <source srcSet="/nitubanner.webp" type="image/webp" /> */}
+          <img
+            src={heroImg}
+            alt="Showroom Nițu Auto Park"
+            width={1920}
+            height={1080}
+            loading="eager"
+            fetchpriority="high"
+            className="absolute inset-0 h-full w-full object-cover object-[28%_center] md:object-center"
+          />
+        </picture>
 
         <motion.div
           className="absolute left-4 top-12 z-10 md:left-8 md:top-16"
@@ -106,14 +110,18 @@ const Home = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          <img
-            src={logo}
-            alt="Logo Nițu Auto Park"
-            width={300}
-            height={160}
-            loading="lazy"
-            className="h-32 w-auto drop-shadow-xl md:h-40"
-          />
+          {/* TODO: Convertește manual logo.png în WebP și plasează-l în public/ pentru o încărcare mai rapidă */}
+          <picture>
+            {/* <source srcSet="/logo.webp" type="image/webp" /> */}
+            <img
+              src={logo}
+              alt="Logo Nițu Auto Park"
+              width={300}
+              height={160}
+              loading="lazy"
+              className="h-32 w-auto drop-shadow-xl md:h-40"
+            />
+          </picture>
         </motion.div>
 
         <div className="relative flex h-full flex-col items-center justify-end px-4 pb-16 text-center">

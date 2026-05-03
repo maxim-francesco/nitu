@@ -34,10 +34,8 @@ const queryClient = new QueryClient({
   },
 });
 
-const PageLoader = () => (
-  <div className="flex min-h-screen items-center justify-center bg-background">
-    <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent drop-shadow-[0_0_8px_rgba(255,184,0,0.5)]" />
-  </div>
+const PageLoadingFallback = () => (
+  <div className="min-h-screen bg-background" />
 );
 
 const AnimatedRoutes = () => {
@@ -73,10 +71,15 @@ const App = () => (
       <BrowserRouter>
         <MotionConfig reducedMotion="user">
           <ScrollToTop />
-          <div className="relative min-h-screen bg-background">
-            <Suspense fallback={<PageLoader />}>
-              <AnimatedRoutes />
-            </Suspense>
+          <div className="relative flex min-h-screen flex-col bg-background">
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-card focus:text-primary focus:px-4 focus:py-2 focus:rounded-lg">
+              Sari la conținut principal
+            </a>
+            <main id="main-content" className="flex-1">
+              <Suspense fallback={<PageLoadingFallback />}>
+                <AnimatedRoutes />
+              </Suspense>
+            </main>
             <Footer />
             <WhatsAppButton />
             <BottomNav />

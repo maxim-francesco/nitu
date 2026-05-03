@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import { CarStructuredData } from "@/components/CarStructuredData";
 import { getListingById } from "@/services/api";
+import { getOptimizedImageUrl } from "@/lib/cloudinary";
 import { getAttribute } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import placeholderImg from "@/assets/car-sedan.jpg";
@@ -203,12 +204,12 @@ const CarDetails = () => {
           <CarouselContent>
             {images.map((img, index) => (
               <CarouselItem key={img.id} onClick={() => openLightbox(index)} className="cursor-pointer">
-                <div className="relative h-72 sm:h-96 overflow-hidden">
+                <div className="relative w-full aspect-[16/9] overflow-hidden">
                   <img 
-                    src={img.url} 
+                    src={getOptimizedImageUrl(img.url, 1280, 720)} 
                     alt={`Imagine ${index + 1} cu ${car.title}`} 
-                    width={800}
-                    height={600}
+                    width={1280}
+                    height={720}
                     loading={index === 0 ? "eager" : "lazy"}
                     fetchpriority={index === 0 ? "high" : "auto"}
                     className="h-full w-full object-cover" 
