@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import {
   ArrowLeft, Calendar, Gauge, Fuel, Cog, Zap, Check,
   MessageCircle, Calculator, Shield, Truck, Award, AlertCircle,
-  X, ChevronLeft, ChevronRight, Share2,
+  X, ChevronLeft, ChevronRight, Share2, PlayCircle,
 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import {
@@ -242,6 +242,19 @@ const CarDetails = () => {
                 <span className="text-2xl font-bold gold-gradient-text">{car.price.toLocaleString("ro-RO")} €</span>
             )}
           </div>
+          {car.youtubeVideoId && (
+            <button
+              onClick={() => {
+                document.getElementById('video-prezentare')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="mt-3 flex items-center gap-2 text-sm font-bold text-red-500 hover:text-red-400 transition-colors w-fit"
+            >
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/20 animate-pulse">
+                <PlayCircle size={14} className="fill-red-500/20" />
+              </div>
+              Urmărește Prezentarea Video
+            </button>
+          )}
         </AnimatedSection>
 
         {/* Specs Grid */}
@@ -277,6 +290,37 @@ const CarDetails = () => {
             </div>}
           </div>
         </AnimatedSection>
+
+        {/* Video Section */}
+        {car.youtubeVideoId && (
+          <AnimatedSection delay={0.25}>
+            <div id="video-prezentare" className="mt-8 scroll-mt-24">
+              <h2 className="mb-4 text-lg font-bold flex items-center gap-2">
+                <PlayCircle size={20} className="text-primary" />
+                Prezentare Video
+              </h2>
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-border/50 bg-black/50 shadow-lg">
+                {car.youtubeVideoId.startsWith('http') ? (
+                  <video 
+                    src={car.youtubeVideoId} 
+                    controls 
+                    className="h-full w-full object-contain"
+                    preload="metadata"
+                  />
+                ) : (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${car.youtubeVideoId}`}
+                    title="Prezentare Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="h-full w-full border-0"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+            </div>
+          </AnimatedSection>
+        )}
 
         {/* CTA Buttons */}
         <AnimatedSection delay={0.3}>

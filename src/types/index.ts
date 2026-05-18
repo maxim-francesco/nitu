@@ -28,6 +28,7 @@ export interface Listing {
   };
   images: Array<{ url: string }>;
   attributeValues: AttributeValue[];
+  youtubeVideoId?: string | null;
 }
 
 // Full listing for detail views

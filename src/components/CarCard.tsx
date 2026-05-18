@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Calendar, Gauge, Fuel, Cog, ArrowRight } from "lucide-react";
+import { Calendar, Gauge, Fuel, Cog, ArrowRight, PlayCircle } from "lucide-react";
 import type { Listing } from "@/types";
 import { getAttribute } from "@/types";
 import { getOptimizedImageUrl } from "@/lib/cloudinary";
@@ -65,7 +65,13 @@ export const CarCard = ({ car, priority = false }: { car: Listing, priority?: bo
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
           />
         </picture>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-card p-3">
+        {car.youtubeVideoId && (
+          <div className="absolute top-3 right-3 bg-red-600/90 backdrop-blur-md text-white flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse z-10">
+            <PlayCircle size={14} className="fill-white/20" />
+            VIDEO
+          </div>
+        )}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-card p-3 flex justify-between items-end">
           <span className="rounded-full bg-primary/20 px-3 py-1 text-xs font-semibold text-primary">
             {car.category.name}
           </span>
