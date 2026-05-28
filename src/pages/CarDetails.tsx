@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import { CarStructuredData } from "@/components/CarStructuredData";
 import { getListingById } from "@/services/api";
-import { getOptimizedImageUrl } from "@/lib/cloudinary";
+import { getOptimizedImageUrl, getOptimizedVideoUrl } from "@/lib/cloudinary";
 import { getAttribute } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import placeholderImg from "@/assets/car-sedan.jpg";
@@ -25,6 +25,29 @@ const sellingPoints = [
   { icon: Truck, title: "Livrare Națională", desc: "Transport pe platformă în toată țara." },
   { icon: Award, title: "Verificare Completă", desc: "Inspecție tehnică și istoricul complet." },
 ];
+
+const getYouTubeId = (urlOrId: string): string | null => {
+  if (!urlOrId) return null;
+  if (!urlOrId.startsWith('http')) return urlOrId;
+  
+  try {
+    const url = new URL(urlOrId);
+    if (url.hostname.includes('youtube.com')) {
+      if (url.pathname.includes('/embed/')) {
+        return url.pathname.split('/embed/')[1]?.split('?')[0] || null;
+      }
+      return url.searchParams.get('v');
+    }
+    if (url.hostname.includes('youtu.be')) {
+      return url.pathname.substring(1).split('?')[0] || null;
+    }
+  } catch (e) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = urlOrId.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  }
+  return null;
+};
 
 const CarDetailsSkeleton = () => (
     <div className="pb-24">
@@ -292,35 +315,41 @@ const CarDetails = () => {
         </AnimatedSection>
 
         {/* Video Section */}
-        {car.youtubeVideoId && (
-          <AnimatedSection delay={0.25}>
-            <div id="video-prezentare" className="mt-8 scroll-mt-24">
-              <h2 className="mb-4 text-lg font-bold flex items-center gap-2">
-                <PlayCircle size={20} className="text-primary" />
-                Prezentare Video
-              </h2>
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-border/50 bg-black/50 shadow-lg">
-                {car.youtubeVideoId.startsWith('http') ? (
-                  <video 
-                    src={car.youtubeVideoId} 
-                    controls 
-                    className="h-full w-full object-contain"
-                    preload="metadata"
-                  />
-                ) : (
-                  <iframe
-                    src={`https://www.youtube.com/embed/${car.youtubeVideoId}`}
-                    title="Prezentare Video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="h-full w-full border-0"
-                    loading="lazy"
-                  />
-                )}
+        {car.youtubeVideoId && (() => {
+          const ytId = getYouTubeId(car.youtubeVideoId);
+          const isYouTube = ytId !== null && !car.youtubeVideoId.includes('cloudinary.com');
+          
+          return (
+            <AnimatedSection delay={0.25}>
+              <div id="video-prezentare" className="mt-8 scroll-mt-24">
+                <h2 className="mb-4 text-lg font-bold flex items-center gap-2">
+                  <PlayCircle size={20} className="text-primary" />
+                  Prezentare Video
+                </h2>
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-border/50 bg-black/50 shadow-lg">
+                  {!isYouTube ? (
+                    <video 
+                      src={getOptimizedVideoUrl(car.youtubeVideoId)} 
+                      controls 
+                      playsInline
+                      className="h-full w-full object-contain"
+                      preload="metadata"
+                    />
+                  ) : (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${ytId}`}
+                      title="Prezentare Video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="h-full w-full border-0"
+                      loading="lazy"
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          </AnimatedSection>
-        )}
+            </AnimatedSection>
+          );
+        })()}
 
         {/* CTA Buttons */}
         <AnimatedSection delay={0.3}>
