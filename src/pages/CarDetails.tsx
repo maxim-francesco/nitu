@@ -329,12 +329,15 @@ const CarDetails = () => {
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-border/50 bg-black/50 shadow-lg">
                   {!isYouTube ? (
                     <video 
-                      src={getOptimizedVideoUrl(car.youtubeVideoId)} 
+                      key={car.youtubeVideoId}
                       controls 
                       playsInline
                       className="h-full w-full object-contain"
                       preload="metadata"
-                    />
+                    >
+                      <source src={getOptimizedVideoUrl(car.youtubeVideoId)} type="video/mp4" />
+                      Browserul tău nu suportă redarea video.
+                    </video>
                   ) : (
                     <iframe
                       src={`https://www.youtube.com/embed/${ytId}`}
