@@ -23,6 +23,7 @@ const Inventory = () => {
   const [search, setSearch] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [transmission, setTransmission] = useState<string>("Toate");
+  const [sortBy, setSortBy] = useState<string>("newest");
 
   // Debounced state for API calls
   const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -66,6 +67,24 @@ const Inventory = () => {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
+  // Local frontend sorting
+  const sortedCars = cars
+    ? [...cars].sort((a, b) => {
+        switch (sortBy) {
+          case "price_asc":
+            return (a.price ?? 0) - (b.price ?? 0);
+          case "price_desc":
+            return (b.price ?? 0) - (a.price ?? 0);
+          case "mileage_asc":
+            return (a.mileage ?? 0) - (b.mileage ?? 0);
+          case "mileage_desc":
+            return (b.mileage ?? 0) - (a.mileage ?? 0);
+          default:
+            return 0; // keeps default API order (newest)
+        }
+      })
+    : [];
+
   return (
     <div className="section-padding pb-24">
       <PageMeta 
@@ -90,7 +109,7 @@ const Inventory = () => {
         </div>
 
         {/* Filters */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* Price Filter */}
           <div className="glass-card rounded-xl p-4">
             <Label className="mb-2 block text-sm font-medium text-muted-foreground">Preț</Label>
@@ -122,6 +141,23 @@ const Inventory = () => {
               </SelectContent>
             </Select>
           </div>
+
+          {/* Sort Filter */}
+          <div className="glass-card rounded-xl p-4">
+            <Label className="mb-2 block text-sm font-medium text-muted-foreground">Ordonează după</Label>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-full border-border/50 bg-background">
+                <SelectValue placeholder="Ordonează după..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Cele mai recente</SelectItem>
+                <SelectItem value="price_asc">Preț: crescător</SelectItem>
+                <SelectItem value="price_desc">Preț: descrescător</SelectItem>
+                <SelectItem value="mileage_asc">Kilometraj: crescător</SelectItem>
+                <SelectItem value="mileage_desc">Kilometraj: descrescător</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
       
@@ -137,13 +173,13 @@ const Inventory = () => {
               </div>
           )}
 
-          {!isLoading && !isError && cars && cars.map((car) => (
+          {!isLoading && !isError && sortedCars && sortedCars.map((car) => (
             <CarCard key={car.id} car={car} />
           ))}
         </AnimatePresence>
       </motion.div>
 
-      {!isLoading && !isError && cars?.length === 0 && (
+      {!isLoading && !isError && sortedCars?.length === 0 && (
         <div className="col-span-full mt-12 flex flex-col items-center gap-3 text-center text-muted-foreground">
           <Car className="h-10 w-10" />
           <p>Nu am găsit nicio mașină care să corespundă filtrelor.</p>
