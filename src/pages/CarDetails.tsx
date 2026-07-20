@@ -227,12 +227,12 @@ const CarDetails = () => {
           <CarouselContent>
             {images.map((img, index) => (
               <CarouselItem key={img.id} onClick={() => openLightbox(index)} className="cursor-pointer">
-                <div className="relative w-full aspect-[16/9] overflow-hidden">
+                <div className="relative w-full aspect-[3/2] md:aspect-[16/10] overflow-hidden">
                   <img 
-                    src={getOptimizedImageUrl(img.url, 1280, 720)} 
+                    src={getOptimizedImageUrl(img.url, 1280, 800)} 
                     alt={`Imagine ${index + 1} cu ${car.title}`} 
                     width={1280}
-                    height={720}
+                    height={800}
                     loading={index === 0 ? "eager" : "lazy"}
                     fetchpriority={index === 0 ? "high" : "auto"}
                     className="h-full w-full object-cover" 
