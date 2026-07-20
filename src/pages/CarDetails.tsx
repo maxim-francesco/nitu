@@ -222,7 +222,7 @@ const CarDetails = () => {
       </div>
 
       {/* Hero Carousel */}
-      <div className="relative">
+      <div className="relative border-b border-primary/20 shadow-[0_8px_20px_-8px_hsl(var(--gold)/0.3)]">
         <Carousel className="w-full" opts={{ loop: images.length > 1 }}>
           <CarouselContent>
             {images.map((img, index) => (
@@ -237,7 +237,6 @@ const CarDetails = () => {
                     fetchpriority={index === 0 ? "high" : "auto"}
                     className="h-full w-full object-cover" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
                 </div>
               </CarouselItem>
             ))}
@@ -249,8 +248,8 @@ const CarDetails = () => {
         </Carousel>
 
         {/* Category badge */}
-        <div className="absolute bottom-4 left-4">
-          <span className="rounded-full bg-primary/20 px-4 py-1.5 text-xs font-semibold text-primary backdrop-blur-sm">
+        <div className="absolute bottom-4 left-4 z-10">
+          <span className="rounded-full bg-card/95 border border-primary/30 px-4 py-1.5 text-xs font-bold text-primary shadow-md">
             {car.category.name}
           </span>
         </div>
