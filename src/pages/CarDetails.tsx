@@ -222,7 +222,7 @@ const CarDetails = () => {
       </div>
 
       {/* Hero Carousel */}
-      <div className="relative border-b border-primary/20 shadow-[0_8px_20px_-8px_hsl(var(--gold)/0.3)]">
+      <div className="relative border-b border-primary/20">
         <Carousel className="w-full" opts={{ loop: images.length > 1 }}>
           <CarouselContent>
             {images.map((img, index) => (
@@ -254,6 +254,8 @@ const CarDetails = () => {
           </span>
         </div>
       </div>
+      {/* Ambient grey glow/gradient under the image */}
+      <div className="h-10 bg-gradient-to-b from-white/20 to-transparent pointer-events-none -mt-px" />
 
       {/* Title & Price */}
       <div className="section-padding pb-0">
