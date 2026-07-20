@@ -253,12 +253,13 @@ const CarDetails = () => {
             {car.category.name}
           </span>
         </div>
+
+        {/* Ambient grey glow/gradient under the image */}
+        <div className="absolute top-full left-0 right-0 h-10 bg-gradient-to-b from-white/20 to-transparent pointer-events-none z-10" />
       </div>
-      {/* Ambient grey glow/gradient under the image */}
-      <div className="h-10 bg-gradient-to-b from-white/20 to-transparent pointer-events-none -mt-px" />
 
       {/* Title & Price */}
-      <div className="section-padding pb-0">
+      <div className="px-4 pt-6 md:px-8 md:pt-10 lg:px-16 pb-0">
         <AnimatedSection>
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <h1 className="text-2xl font-bold md:text-3xl">{car.title}</h1>
