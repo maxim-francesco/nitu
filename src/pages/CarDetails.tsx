@@ -287,10 +287,10 @@ const CarDetails = () => {
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {specs.map((s) => (
               <div key={s.label} className="glass-card rounded-xl p-3 flex items-center gap-3">
-                <s.icon size={18} className="gold-icon shrink-0" />
+                <s.icon size={20} className="gold-icon shrink-0" />
                 <div>
-                  <p className="text-[11px] text-muted-foreground">{s.label}</p>
-                  <p className="text-sm font-semibold">{String(s.value)}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80">{s.label}</p>
+                  <p className="font-bold text-foreground text-base mt-0.5">{String(s.value)}</p>
                 </div>
               </div>
             ))}

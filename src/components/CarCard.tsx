@@ -11,10 +11,10 @@ const SpecItem = ({ icon: Icon, value, label }: { icon: React.ElementType, value
     if (!value && value !== 0) return null;
     return (
         <div className="flex items-center gap-3 bg-muted/40 hover:bg-muted/60 transition-colors p-3 rounded-xl border border-border/20 shadow-sm">
-            <Icon size={18} className="gold-icon shrink-0" />
+            <Icon size={20} className="gold-icon shrink-0" />
             <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">{label}</p>
-                <p className="font-bold text-foreground text-sm truncate mt-0.5">{String(value)}</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80">{label}</p>
+                <p className="font-bold text-foreground text-base truncate mt-0.5">{String(value)}</p>
             </div>
         </div>
     )
