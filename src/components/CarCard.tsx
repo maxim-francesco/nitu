@@ -10,10 +10,10 @@ import placeholderImg from "@/assets/car-sedan.jpg";
 const SpecItem = ({ icon: Icon, value, label }: { icon: React.ElementType, value: string | number | boolean | null, label: string }) => {
     if (!value && value !== 0) return null;
     return (
-        <div className="flex items-center gap-3 bg-muted/40 hover:bg-muted/60 transition-colors p-3 rounded-xl border border-border/20 shadow-sm">
+        <div className="flex items-center gap-3 bg-black/20 hover:bg-black/35 transition-colors p-3 rounded-xl border border-white/5 shadow-sm">
             <Icon size={20} className="gold-icon shrink-0" />
             <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80">{label}</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/85">{label}</p>
                 <p className="font-bold text-foreground text-base truncate mt-0.5">{String(value)}</p>
             </div>
         </div>
@@ -37,7 +37,7 @@ export const CarCard = ({ car, priority = false }: { car: Listing, priority?: bo
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="glass-card-gold flex flex-col overflow-hidden group hover:border-primary/60 transition-all duration-300 hover:shadow-gold-lg"
+      className="glass-card-gray flex flex-col overflow-hidden group hover:border-primary/60 transition-all duration-300 hover:shadow-gold-lg"
     >
       <div 
         className="flex h-full w-full flex-col cursor-pointer"
@@ -107,7 +107,7 @@ export const CarCard = ({ car, priority = false }: { car: Listing, priority?: bo
 };
 
 export const CarCardSkeleton = () => (
-    <div className="glass-card-gold flex flex-col overflow-hidden">
+    <div className="glass-card-gray flex flex-col overflow-hidden">
         <Skeleton className="aspect-[3/2] w-full" />
         <div className="flex flex-1 flex-col p-5">
             <div className="flex justify-between items-start">
@@ -116,7 +116,7 @@ export const CarCardSkeleton = () => (
             </div>
             <div className="mt-4 grid grid-cols-2 gap-3">
                 {Array.from({ length: 4 }).map((_, i) => (
-                     <div key={i} className="flex items-center gap-3 bg-muted/40 p-3 rounded-xl border border-border/20">
+                     <div key={i} className="flex items-center gap-3 bg-black/20 p-3 rounded-xl border border-white/5">
                         <Skeleton className="size-5 rounded-md"/>
                         <div className="space-y-1.5 flex-1">
                             <Skeleton className="h-2.5 w-1/2"/>
