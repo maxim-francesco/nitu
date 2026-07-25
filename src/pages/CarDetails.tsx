@@ -272,10 +272,10 @@ const CarDetails = () => {
               onClick={() => {
                 document.getElementById('video-prezentare')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="mt-3 flex items-center gap-2 text-sm font-bold text-red-500 hover:text-red-400 transition-colors w-fit"
+              className="mt-4 flex items-center gap-3 text-base md:text-lg font-extrabold text-red-500 hover:text-red-400 hover:scale-[1.02] transition-all w-fit bg-red-500/10 border border-red-500/30 px-4 py-2 rounded-full shadow-md hover:shadow-red-500/10"
             >
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/20 animate-pulse">
-                <PlayCircle size={14} className="fill-red-500/20" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-red-500/25 animate-pulse">
+                <PlayCircle size={20} className="fill-red-500/30" />
               </div>
               Urmărește Prezentarea Video
             </button>
@@ -300,8 +300,8 @@ const CarDetails = () => {
         {/* Description & Features */}
         <AnimatedSection delay={0.2}>
           <div className="mt-8">
-            <h2 className="mb-4 text-lg font-bold">Descriere & Dotări</h2>
-            <p className="text-muted-foreground text-sm mb-4 whitespace-pre-wrap">{car.description}</p>
+            <h2 className="mb-4 text-xl font-bold">Descriere & Dotări</h2>
+            <p className="text-zinc-300 text-base md:text-lg leading-relaxed mb-6 whitespace-pre-wrap">{car.description}</p>
             {features.length > 0 && <div className="flex flex-wrap gap-2">
               {features.map((f) => (
                 <span
