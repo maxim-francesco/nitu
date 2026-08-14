@@ -55,6 +55,14 @@ export interface ContactFormData {
   email: string;
   phone?: string;
   message: string;
+  type?: "GENERAL" | "BUYBACK" | "ORDER" | "STOCK" | "FINANCING";
+}
+
+export interface ReviewFormData {
+  name: string;
+  rating: number;
+  text: string;
+  comment?: string;
 }
 
 /**

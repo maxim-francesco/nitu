@@ -59,14 +59,14 @@ const CarDetailsSkeleton = () => (
             </div>
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {Array.from({length: 6}).map((_, i) => (
-                    <Skeleton key={i} className="h-[62px] w-full rounded-xl" />
+                    <Skeleton key={`sk-spec-${i}`} className="h-[62px] w-full rounded-xl" />
                 ))}
             </div>
             <div className="mt-8">
                  <Skeleton className="h-6 w-32 mb-4" />
                  <div className="flex flex-wrap gap-2">
                     {Array.from({length: 8}).map((_, i) => (
-                        <Skeleton key={i} className="h-8 w-24 rounded-full" />
+                        <Skeleton key={`sk-feat-${i}`} className="h-8 w-24 rounded-full" />
                     ))}
                  </div>
             </div>
@@ -226,7 +226,7 @@ const CarDetails = () => {
         <Carousel className="w-full" opts={{ loop: images.length > 1 }}>
           <CarouselContent>
             {images.map((img, index) => (
-              <CarouselItem key={img.id} onClick={() => openLightbox(index)} className="cursor-pointer">
+              <CarouselItem key={`${img.id}-${index}`} onClick={() => openLightbox(index)} className="cursor-pointer">
                 <div className="relative w-full aspect-[3/2] md:aspect-[16/10] overflow-hidden">
                   <img 
                     src={getOptimizedImageUrl(img.url, 1280, 800)} 
@@ -285,8 +285,8 @@ const CarDetails = () => {
         {/* Specs Grid */}
         {specs.length > 0 && <AnimatedSection delay={0.1}>
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {specs.map((s) => (
-              <div key={s.label} className="glass-card rounded-xl p-3 flex items-center gap-3">
+            {specs.map((s, index) => (
+              <div key={`${s.label}-${index}`} className="glass-card rounded-xl p-3 flex items-center gap-3">
                 <s.icon size={20} className="gold-icon shrink-0" />
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80">{s.label}</p>
@@ -303,9 +303,9 @@ const CarDetails = () => {
             <h2 className="mb-4 text-xl font-bold">Descriere & Dotări</h2>
             <p className="text-zinc-300 text-base md:text-lg leading-relaxed mb-6 whitespace-pre-wrap">{car.description}</p>
             {features.length > 0 && <div className="flex flex-wrap gap-2">
-              {features.map((f) => (
+              {features.map((f, idx) => (
                 <span
-                  key={f}
+                  key={`${f}-${idx}`}
                   className="inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-muted/40 px-3 py-1.5 text-xs font-medium text-foreground"
                 >
                   <Check size={12} className="text-primary" />
@@ -413,7 +413,7 @@ const CarDetails = () => {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {sellingPoints.map((sp, i) => (
                 <motion.div
-                  key={sp.title}
+                  key={`${sp.title}-${i}`}
                   className="glass-card-gold rounded-xl p-4 flex items-start gap-3"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}

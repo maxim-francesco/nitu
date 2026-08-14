@@ -84,6 +84,7 @@ ${data.details || "Niciun detaliu suplimentar."}
         email: data.email,
         phone: data.phone,
         message: message,
+        type: "ORDER",
       });
       setSubmitted(true);
     } catch (error) {

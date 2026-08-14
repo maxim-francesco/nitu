@@ -85,6 +85,7 @@ export const getListingById = async (id: string): Promise<DetailedListing> => {
  */
 export const submitContactForm = async (data: ContactFormData): Promise<any> => {
   const payload = {
+    type: data.type || "GENERAL",
     ...data,
     businessId: BUSINESS_ID,
   };
@@ -105,3 +106,33 @@ export const submitContactForm = async (data: ContactFormData): Promise<any> => 
 
   return await response.json();
 };
+
+/**
+ * Submits a customer review.
+ * @param data The review data.
+ * @returns A promise that resolves to the server response.
+ */
+export const submitReview = async (data: { name: string; rating: number; text: string; comment?: string }): Promise<any> => {
+  const payload = {
+    ...data,
+    comment: data.comment || data.text,
+    businessId: BUSINESS_ID,
+  };
+
+  const response = await fetchWithTimeout(`${API_BASE_URL}/public/reviews`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => ({ message: "A apărut o eroare la trimiterea recenziei." }));
+    console.error("Review submission error:", errorBody);
+    throw new ApiError(errorBody.message || "A eșuat trimiterea recenziei.", response.status);
+  }
+
+  return await response.json();
+};
+
