@@ -42,8 +42,6 @@ export interface Filters {
   q?: string;
   sortBy?: 'newest' | 'oldest' | 'price_asc' | 'price_desc' | 'mileage_asc' | 'mileage_desc';
   limit?: number;
-  Pret_min?: string;
-  Pret_max?: string;
   Kilometraj_min?: string;
   Kilometraj_max?: string;
   Combustibil?: string[];
@@ -56,6 +54,7 @@ export interface ContactFormData {
   phone?: string;
   message: string;
   type?: "GENERAL" | "BUYBACK" | "ORDER" | "STOCK" | "FINANCING";
+  listingId?: string;
 }
 
 export interface ReviewFormData {

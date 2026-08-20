@@ -89,7 +89,7 @@ export const CarCard = ({ car, priority = false }: { car: Listing, priority?: bo
         
         <div className="mt-4 grid grid-cols-2 gap-3">
             <SpecItem icon={Calendar} value={year} label="An" />
-            <SpecItem icon={Gauge} value={car.mileage ? `${car.mileage.toLocaleString("ro-RO")} km` : null} label="Kilometraj" />
+            <SpecItem icon={Gauge} value={car.mileage != null ? `${car.mileage.toLocaleString("ro-RO")} km` : "—"} label="Kilometraj" />
             <SpecItem icon={Fuel} value={fuel} label="Combustibil" />
             <SpecItem icon={Cog} value={transmission} label="Transmisie" />
         </div>
