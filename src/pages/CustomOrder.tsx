@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +10,7 @@ import SectionTitle from "@/components/SectionTitle";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { submitContactForm } from "@/services/api";
 import PageMeta from "@/components/PageMeta";
 
@@ -31,6 +33,7 @@ const formSchema = z.object({
   email: z.string().email("Adresa de email este invalidă."),
   phone: z.string().optional(),
   details: z.string().optional(),
+  termsAccepted: z.boolean().refine((val) => val === true, "Trebuie să fii de acord cu Politica de Confidentialitate."),
 });
 
 const CustomOrder = () => {
@@ -47,6 +50,7 @@ const CustomOrder = () => {
       email: "",
       phone: "",
       details: "",
+      termsAccepted: false,
     },
   });
 
@@ -96,7 +100,7 @@ ${data.details || "Niciun detaliu suplimentar."}
 
   if (submitted) {
     return (
-      <div className="section-padding flex min-h-[70vh] flex-col items-center justify-center pb-24 text-center">
+      <div className="section-padding flex min-h-[70vh] flex-col items-center justify-center pb-44 text-center">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -117,7 +121,7 @@ ${data.details || "Niciun detaliu suplimentar."}
   const fuelValue = form.watch("fuel");
 
   return (
-    <div className="section-padding pb-24">
+    <div className="section-padding pb-44">
       <PageMeta 
         title="Mașini la Comandă | Nițu Auto Park" 
         description="Spune-ne ce cauți și noi găsim mașina perfectă pentru tine și bugetul tău." 
@@ -216,6 +220,19 @@ ${data.details || "Niciun detaliu suplimentar."}
                       <FormLabel>Alte detalii (Opțional)</FormLabel>
                       <FormControl><Textarea placeholder="Caut o mașină de familie, an fabricație după 2020..." aria-label="Alte detalii" {...field} /></FormControl>
                       <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="termsAccepted" render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-2">
+                      <FormControl>
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-xs font-normal text-muted-foreground cursor-pointer">
+                          Sunt de acord cu <Link to="/politica-de-confidentialitate" target="_blank" className="text-primary underline hover:text-primary/80">Politica de Confidențialitate</Link> și prelucrarea datelor cu caracter personal.
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )} />
                 </motion.div>

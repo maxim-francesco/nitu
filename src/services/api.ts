@@ -84,11 +84,14 @@ export const getListingById = async (id: string): Promise<DetailedListing> => {
  * @returns A promise that resolves to the server response.
  */
 export const submitContactForm = async (data: ContactFormData): Promise<any> => {
-  const payload = {
-    type: data.type || "GENERAL",
+  const payload: Record<string, any> = {
     ...data,
+    type: data.type || "GENERAL",
     businessId: BUSINESS_ID,
   };
+  if (!data.listingId) {
+    delete payload.listingId;
+  }
 
   const response = await fetchWithTimeout(`${API_BASE_URL}/public/contact`, {
     method: "POST",

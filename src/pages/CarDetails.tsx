@@ -1,23 +1,29 @@
-
 import { useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { toast } from "sonner";
 import {
   ArrowLeft, Calendar, Gauge, Fuel, Cog, Zap, Check,
   MessageCircle, Calculator, Shield, Truck, Award, AlertCircle,
-  X, ChevronLeft, ChevronRight, Share2, PlayCircle,
+  X, ChevronLeft, ChevronRight, Share2, PlayCircle, Loader2, Send, CheckCircle2
 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import {
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
 } from "@/components/ui/carousel";
 import { CarStructuredData } from "@/components/CarStructuredData";
-import { getListingById } from "@/services/api";
+import { getListingById, submitContactForm } from "@/services/api";
 import { getOptimizedImageUrl, getOptimizedVideoUrl } from "@/lib/cloudinary";
 import { getAttribute } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import placeholderImg from "@/assets/car-sedan.jpg";
 
 const sellingPoints = [
@@ -25,6 +31,14 @@ const sellingPoints = [
   { icon: Truck, title: "Livrare Națională", desc: "Transport pe platformă în toată țara." },
   { icon: Award, title: "Verificare Completă", desc: "Inspecție tehnică și istoricul complet." },
 ];
+
+const stockFormSchema = z.object({
+  name: z.string().min(2, "Numele este obligatoriu."),
+  email: z.string().email("Adresa de email este invalidă."),
+  phone: z.string().min(6, "Numărul de telefon este obligatoriu."),
+  message: z.string().min(5, "Mesajul este obligatoriu."),
+  termsAccepted: z.boolean().refine((val) => val === true, "Trebuie să fii de acord cu Politica de Confidențialitate."),
+});
 
 const getYouTubeId = (urlOrId: string): string | null => {
   if (!urlOrId) return null;
@@ -50,7 +64,7 @@ const getYouTubeId = (urlOrId: string): string | null => {
 };
 
 const CarDetailsSkeleton = () => (
-    <div className="pb-24">
+    <div className="pb-44">
         <div className="relative h-72 sm:h-96 bg-muted/50"><Skeleton className="h-full w-full"/></div>
         <div className="section-padding pb-0">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -79,11 +93,23 @@ const CarDetails = () => {
   const navigate = useNavigate();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  
+  const [stockSubmitted, setStockSubmitted] = useState(false);
+
   const { data: car, isLoading, isError } = useQuery({
     queryKey: ['listing', id],
     queryFn: () => getListingById(id!),
     enabled: !!id,
+  });
+
+  const stockForm = useForm<z.infer<typeof stockFormSchema>>({
+    resolver: zodResolver(stockFormSchema),
+    values: {
+      name: "",
+      email: "",
+      phone: "",
+      message: car ? `Mă interesează mașina: ${car.title}` : "",
+      termsAccepted: false,
+    },
   });
 
   useEffect(() => {
@@ -167,6 +193,25 @@ const CarDetails = () => {
     };
   }, [lightboxOpen, images.length, nextImage, prevImage, closeLightbox]);
 
+  const onStockFormSubmit = async (data: z.infer<typeof stockFormSchema>) => {
+    if (!car) return;
+    try {
+      await submitContactForm({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        message: data.message,
+        type: "STOCK",
+        listingId: car.id,
+      });
+      setStockSubmitted(true);
+      toast.success("Solicitarea ta a fost trimisă!");
+    } catch (err) {
+      toast.error("Eroare la trimitere", {
+        description: err instanceof Error ? err.message : "Vă rugăm încercați din nou.",
+      });
+    }
+  };
 
   if (isLoading) {
     return <CarDetailsSkeleton />;
@@ -174,7 +219,7 @@ const CarDetails = () => {
 
   if (isError || !car) {
     return (
-      <div className="section-padding flex min-h-[60vh] flex-col items-center justify-center pb-24 text-center">
+      <div className="section-padding flex min-h-[60vh] flex-col items-center justify-center pb-44 text-center">
         <AlertCircle className="w-12 h-12 text-destructive mb-4" />
         <p className="mb-4 text-xl text-muted-foreground">Mașina nu a fost găsită sau a apărut o eroare.</p>
         <button onClick={() => navigate("/masini")} className="btn-gold rounded-full px-6 py-3 text-sm">
@@ -206,7 +251,7 @@ const CarDetails = () => {
     .filter((v): v is string => v !== null);
 
   return (
-    <div className="pb-24">
+    <div className="pb-44">
       <CarStructuredData car={car} />
       {/* Back button */}
       <div className="fixed left-4 top-4 z-40">
@@ -302,7 +347,7 @@ const CarDetails = () => {
           <div className="mt-8">
             <h2 className="mb-4 text-xl font-bold">Descriere & Dotări</h2>
             <p className="text-zinc-300 text-base md:text-lg leading-relaxed mb-6 whitespace-pre-wrap">{car.description}</p>
-            {features.length > 0 && <div className="flex flex-wrap gap-2">
+            {features.length > 0 && <div className="flex flex-wrap gap-2 mb-8">
               {features.map((f, idx) => (
                 <span
                   key={`${f}-${idx}`}
@@ -313,6 +358,88 @@ const CarDetails = () => {
                 </span>
               ))}
             </div>}
+          </div>
+        </AnimatedSection>
+
+        {/* Inline Enquiry Form for Stock Listing */}
+        <AnimatedSection delay={0.22}>
+          <div className="glass-card-gold rounded-2xl p-6 my-8 max-w-2xl">
+            <h3 className="text-lg font-bold text-foreground mb-1">Cere Detalii despre Această Mașină</h3>
+            <p className="text-xs text-muted-foreground mb-6">Completează formularul și te vom contacta în cel mai scurt timp cu detalii suplimentare sau pentru a stabili o vizionare.</p>
+
+            {stockSubmitted ? (
+              <div className="flex flex-col items-center justify-center p-6 text-center">
+                <CheckCircle2 size={48} className="text-primary mb-2" />
+                <h4 className="font-bold text-lg">Solicitarea a fost trimisă!</h4>
+                <p className="text-sm text-muted-foreground">Un consultant Nițu Auto Park te va contacta în curând.</p>
+              </div>
+            ) : (
+              <Form {...stockForm}>
+                <form onSubmit={stockForm.handleSubmit(onStockFormSubmit)} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField control={stockForm.control} name="name" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nume și Prenume</FormLabel>
+                        <FormControl><Input placeholder="ex: Ion Popescu" aria-label="Nume și Prenume" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                    <FormField control={stockForm.control} name="phone" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Telefon</FormLabel>
+                        <FormControl><Input type="tel" placeholder="ex: 0745 000 000" aria-label="Telefon" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                  </div>
+                  <FormField control={stockForm.control} name="email" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Adresă Email</FormLabel>
+                      <FormControl><Input type="email" placeholder="ex: ion.popescu@email.com" aria-label="Adresă Email" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={stockForm.control} name="message" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Mesaj</FormLabel>
+                      <FormControl><Textarea rows={3} aria-label="Mesaj" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={stockForm.control} name="termsAccepted" render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-1">
+                      <FormControl>
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-xs font-normal text-muted-foreground cursor-pointer">
+                          Sunt de acord cu <Link to="/politica-de-confidentialitate" target="_blank" className="text-primary underline hover:text-primary/80">Politica de Confidențialitate</Link> și prelucrarea datelor.
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )} />
+
+                  <button
+                    type="submit"
+                    disabled={stockForm.formState.isSubmitting}
+                    className="btn-gold w-full rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2 mt-2"
+                  >
+                    {stockForm.formState.isSubmitting ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Se trimite...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={16} />
+                        Trimite Solicitarea
+                      </>
+                    )}
+                  </button>
+                </form>
+              </Form>
+            )}
           </div>
         </AnimatedSection>
 
