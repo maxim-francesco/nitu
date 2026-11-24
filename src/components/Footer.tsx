@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { openConsentSettings } from "@/lib/consent";
 import logo from "@/assets/logo.png";
 
 const Footer = () => (
@@ -38,17 +39,45 @@ const Footer = () => (
         
         {/* Bottom Row: Legal Icons, Business Info, Credits */}
         <div className="flex flex-col items-center gap-6 text-xs text-muted-foreground/80">
-          <div className="flex flex-col gap-2">
-            <a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener noreferrer" aria-label="Soluționarea Alternativă a Litigiilor">
-              <img src="https://anpc.ro/wp-content/uploads/2022/07/SAL-PICTOGRAMA.png" alt="Soluționarea Alternativă a Litigiilor (SAL) - ANPC" width={250} height={80} style={{aspectRatio: '250/80'}} loading="lazy" className="h-10 w-auto md:h-12 object-contain transition-transform hover:scale-105" />
+          <div className="flex flex-col items-center gap-3">
+            <a
+              href="https://reclamatiisal.anpc.ro/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Soluționarea Alternativă a Litigiilor (SAL) – ANPC"
+              className="inline-flex"
+            >
+              <img
+                src="/assets/anpc-sal-250x50.png"
+                alt="Soluționarea Alternativă a Litigiilor (SAL) – ANPC"
+                width={250}
+                height={50}
+                loading="lazy"
+                className="h-[50px] w-[250px] object-contain transition-transform hover:scale-105"
+              />
             </a>
-            <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" aria-label="Soluționarea Online a Litigiilor">
-              <img src="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png" alt="Soluționarea Online a Litigiilor (SOL) - ANPC" width={250} height={80} style={{aspectRatio: '250/80'}} loading="lazy" className="h-10 w-auto md:h-12 object-contain transition-transform hover:scale-105" />
-            </a>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+              <a
+                href="https://anpc.ro/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
+              >
+                ANPC – Autoritatea Națională pentru Protecția Consumatorilor
+              </a>
+              <button
+                type="button"
+                onClick={openConsentSettings}
+                className="text-xs text-muted-foreground hover:text-primary transition-colors underline underline-offset-4"
+              >
+                Setări cookies
+              </button>
+            </div>
           </div>
           <div className="space-y-1">
             <p>© {new Date().getFullYear()} Nițu Auto Park. Toate drepturile rezervate.</p>
-            <p className="font-semibold">LOUNGE QUEEN S CAFE SRL | CUI: 38748301 | J29/157/2018</p>
+            <p className="font-semibold">LOUNGE QUEEN S CAFE SRL | CUI: 38748301 | J2018000157299</p>
+            <p>Sediu social: Str. Dealului nr. 84, Câmpina, Prahova, 105600</p>
           </div>
           <div>
             <p>
