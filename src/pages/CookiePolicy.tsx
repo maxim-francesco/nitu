@@ -15,7 +15,7 @@ const CookiePolicy = () => {
                     Acest site web, nituautopark.ro, folosește stocare locală strict necesară pentru
                     funcționare și, numai cu acordul dumneavoastră, tehnologii de analiză și de
                     marketing. Operatorul site-ului este LOUNGE QUEEN S CAFE SRL, CUI 38748301,
-                    J29/157/2018.
+                    J2018000157299.
                 </p>
 
                 <h2 className="gold-gradient-text">1. Ce sunt cookie-urile și stocarea locală?</h2>

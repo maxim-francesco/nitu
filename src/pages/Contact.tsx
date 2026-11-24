@@ -16,7 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { submitContactForm } from "@/services/api";
 
 const contactInfo = [
-  { icon: MapPin, label: "Adresa", value: "Bulevardul Nicolae Bălcescu, 105600, Câmpina, România" },
+  { icon: MapPin, label: "Locație", value: "Bulevardul Nicolae Bălcescu, 105600, Câmpina, România" },
   { icon: Phone, label: "Telefon", value: "0745 461 202" },
   { icon: Mail, label: "Email", value: "andrei9940@yahoo.com" },
   { icon: Clock, label: "Program", value: "Deschis Non-Stop" },

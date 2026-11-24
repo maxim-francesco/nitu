@@ -76,7 +76,8 @@ const Footer = () => (
           </div>
           <div className="space-y-1">
             <p>© {new Date().getFullYear()} Nițu Auto Park. Toate drepturile rezervate.</p>
-            <p className="font-semibold">LOUNGE QUEEN S CAFE SRL | CUI: 38748301 | J29/157/2018</p>
+            <p className="font-semibold">LOUNGE QUEEN S CAFE SRL | CUI: 38748301 | J2018000157299</p>
+            <p>Sediu social: Str. Dealului nr. 84, Câmpina, Prahova, 105600</p>
           </div>
           <div>
             <p>

@@ -5,8 +5,8 @@ const PrivacyPolicy = () => {
     const business = {
         name: "LOUNGE QUEEN S CAFE SRL",
         cui: "38748301",
-        regCom: "J29/157/2018",
-        address: "Bulevardul Nicolae Bălcescu, 105600, Câmpina, România",
+        regCom: "J2018000157299",
+        address: "Str. Dealului nr. 84, Câmpina, Prahova, 105600",
         tradeName: "Nițu Auto Park",
         email: "andrei9940@yahoo.com",
         phone: "0745 461 202"
@@ -23,7 +23,7 @@ const PrivacyPolicy = () => {
             >
                 <p className="lead">
                     Confidențialitatea datelor dumneavoastră cu caracter personal reprezintă una dintre preocupările principale ale <strong>{business.name}</strong>, în calitate de operator de date.
-                    Acest document are rolul de a vă informa cu privire la prelucrarea datelor dumneavoastră cu caracter personal, în contextul utilizării paginii de internet <strong>nitu-auto.ro</strong>.
+                    Acest document are rolul de a vă informa cu privire la prelucrarea datelor dumneavoastră cu caracter personal, în contextul utilizării paginii de internet <strong>nituautopark.ro</strong>.
                 </p>
 
                 <h2 className="gold-gradient-text">1. Operatorul de Date</h2>

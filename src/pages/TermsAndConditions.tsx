@@ -5,8 +5,8 @@ const TermsAndConditions = () => {
     const business = {
         name: "LOUNGE QUEEN S CAFE SRL",
         cui: "38748301",
-        regCom: "J29/157/2018",
-        address: "Bulevardul Nicolae Bălcescu, 105600, Câmpina, România",
+        regCom: "J2018000157299",
+        address: "Str. Dealului nr. 84, Câmpina, Prahova, 105600",
         tradeName: "Nițu Auto Park"
     };
 
@@ -28,7 +28,7 @@ const TermsAndConditions = () => {
                 <h2 className="gold-gradient-text">1. Definiții</h2>
                 <p>
                     <strong>Compania:</strong> {business.name}, cu sediul în {business.address}, înregistrată la Registrul Comerțului sub nr. {business.regCom}, CUI {business.cui}.<br/>
-                    <strong>Site:</strong> Domeniul web nitu-auto.ro și subdomeniile acestuia.<br/>
+                    <strong>Site:</strong> Domeniul web nituautopark.ro și subdomeniile acestuia.<br/>
                     <strong>Utilizator:</strong> Orice persoană fizică sau juridică care accesează și utilizează Site-ul.
                 </p>
                 
