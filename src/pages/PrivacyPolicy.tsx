@@ -75,10 +75,10 @@ const PrivacyPolicy = () => {
                 <h2 className="gold-gradient-text">4. Destinatari și împuterniciți</h2>
                 <p>Datele pot fi accesate de următoarele categorii de destinatari, strict pentru scopurile de mai sus:</p>
                 <ul>
-                    <li><strong>TikTok Technology Limited</strong> (Irlanda) — furnizorul pixelului de marketing, exclusiv dacă acceptați categoria „Marketing”.</li>
+                    <li><strong>TikTok Technology Limited</strong> (Irlanda) — pentru pixelul de marketing, exclusiv dacă acceptați categoria „Marketing”. Pentru colectarea și transmiterea evenimentelor pixelului și pentru raportarea de măsurare, TikTok și operatorul acestui site sunt <strong>operatori comuni</strong> (art. 26 GDPR), conform Termenilor specifici pe jurisdicții pentru SEE ai TikTok. Pentru crearea de audiențe și optimizarea reclamelor, fiecare parte acționează ca operator independent. <a href="https://www.tiktok.com/legal/page/eea/privacy-policy/en" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-4">Politica de confidențialitate TikTok</a> explică prelucrările sale.</li>
                     <li><strong>Furnizori de hosting și infrastructură</strong> — Vercel Inc. (găzduirea site-ului) și Render Services, Inc. (serverul aplicației și baza de date), care prelucrează date tehnice și datele transmise prin formulare.</li>
-                    <li><strong>Furnizori de livrare a imaginilor</strong> — Cloudflare, Inc. și Cloudinary, care servesc resursele media ale site-ului și pot înregistra adresa IP a vizitatorului.</li>
-                    <li><strong>Instituții financiare</strong> — numai dacă solicitați explicit o ofertă de finanțare și numai datele necesare analizării cererii.</li>
+                    <li><strong>Furnizor de livrare a imaginilor</strong> — Cloudflare, Inc. (worker-ul R2 care servește resursele media) poate înregistra adresa IP a vizitatorului.</li>
+                    <li><strong>Instituții financiare</strong> — site-ul nu transmite automat date către finanțatori. Dacă solicitați o ofertă de finanțare, datele pot fi comunicate finanțatorului ales numai după ce vă exprimați acordul în acest sens.</li>
                     <li><strong>Autorități publice</strong> — atunci când există o obligație legală.</li>
                 </ul>
                 <p>
@@ -87,10 +87,10 @@ const PrivacyPolicy = () => {
 
                 <h2 className="gold-gradient-text">5. Transferuri în afara Spațiului Economic European</h2>
                 <p>
-                    Unii dintre destinatari pot prelucra date în afara SEE. Pentru TikTok, transferurile către societăți din grup și către terți din state fără decizie de adecvare se realizează pe baza clauzelor contractuale standard, conform politicii de confidențialitate TikTok pentru SEE.
+                    Unii dintre destinatari pot prelucra date în afara SEE. Pentru TikTok, transferurile către societăți din grup și către terți din state fără decizie de adecvare se realizează pe baza clauzelor contractuale standard, conform Termenilor specifici pe jurisdicții ai TikTok pentru SEE și politicii sale de confidențialitate.
                 </p>
                 <p>
-                    Furnizorii de infrastructură sunt societăți cu sediul în Statele Unite și pot prelucra date în afara SEE; garanțiile contractuale aplicabile sunt cele prevăzute în acordurile de prelucrare încheiate cu fiecare furnizor. Detalii suplimentare despre mecanismul aplicabil se pot obține la cerere, la adresa de contact de mai sus.
+                    Furnizorii de infrastructură sunt societăți cu sediul în Statele Unite și pot prelucra date în afara SEE. Termenii de prelucrare publicați de Vercel, Render și Cloudflare prevăd clauze contractuale standard pentru transferurile internaționale; detaliile despre mecanismul aplicabil se pot obține la cerere, la adresa de contact de mai sus.
                 </p>
 
                 <h2 className="gold-gradient-text">6. Cookie-uri și tehnologii de urmărire</h2>
